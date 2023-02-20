@@ -7,9 +7,16 @@
 
     <v-navigation-drawer v-model="drawer" temporary>
       <v-list>
-        <v-list-item v-for="menu in menus" :key="menu.name" :to="{ name: menu.name }" link>
-          <v-list-item-title>{{ menu.title }}</v-list-item-title>
-        </v-list-item>
+        <v-list-item :to="{ name: 'DressPage' }" title="입어볼래?" link></v-list-item>
+        <v-list-item :to="{ name: 'CartPage' }" title="장바구니" link></v-list-item>
+        <v-list-group value="mypage">
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props" title="마이페이지"></v-list-item>
+          </template>
+          <v-list-item :to="{ name: 'MyPage' }" value="mypage" title="주문내역" link></v-list-item>
+          <v-list-item :to="{ name: 'MyPage' }" value="mypage" title="회원정보" link></v-list-item>
+          <v-list-item :to="{ name: 'MyPage' }" value="mypage" title="Q&A" link></v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
 
@@ -27,11 +34,6 @@
 
   const props = defineProps(['title'])
   const drawer = ref(false)
-  const menus = ref([
-    {title: '입어볼래?', name: 'DressPage'},
-    {title: '장바구니', name: 'CartPage'},
-    {title: '마이페이지', name: 'MyPage'},
-  ])
 </script>
 
 <style scoped>
