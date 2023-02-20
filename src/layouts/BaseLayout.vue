@@ -9,13 +9,13 @@
       <v-list>
         <v-list-item :to="{ name: 'DressPage' }" title="입어볼래?" link></v-list-item>
         <v-list-item :to="{ name: 'CartPage' }" title="장바구니" link></v-list-item>
-        <v-list-group value="mypage">
+        <v-list-group value="마이페이지">
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="마이페이지"></v-list-item>
           </template>
-          <v-list-item :to="{ name: 'OrderListPage' }" value="mypage" title="주문내역" link></v-list-item>
-          <v-list-item :to="{ name: 'MyProfilePage' }" value="mypage" title="회원정보" link></v-list-item>
-          <v-list-item :to="{ name: 'QnAListPage' }" value="mypage" title="Q&A" link></v-list-item>
+          <v-list-item :to="{ name: 'OrderListPage' }" value="주문내역" title="주문내역" link></v-list-item>
+          <v-list-item :to="{ name: 'MyProfilePage' }" value="회원정보" title="회원정보" link></v-list-item>
+          <v-list-item :to="{ name: 'QnAListPage' }" value="Q&A" title="Q&A" link></v-list-item>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
