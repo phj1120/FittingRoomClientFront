@@ -40,6 +40,16 @@ const routes = [
         path: 'profile',
         name: 'MyProfilePage',
         component: () => import('@/views/my/MyProfilePage.vue')
+      },
+      {
+        path: 'order/list',
+        name: 'OrderListPage',
+        component: () => import('@/views/my/MyOrderListPage.vue')
+      },
+      {
+        path: 'qna/list',
+        name: 'QnAListPage',
+        component: () => import('@/views/my/MyQnAListPage.vue')
       }
     ]
   }
