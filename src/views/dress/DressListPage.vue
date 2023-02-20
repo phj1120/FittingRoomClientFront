@@ -1,5 +1,5 @@
 <template>
-  <BaseLayout>
+  <BaseLayout :title="title">
     <ListComponent></ListComponent>
   </BaseLayout>
 </template>
@@ -10,4 +10,5 @@
   import ListComponent from "@/components/dress/ListComponent.vue";
 
 
+  const title = ref('입어볼래?')
 </script>

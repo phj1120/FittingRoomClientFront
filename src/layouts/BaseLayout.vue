@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>입어볼래</v-toolbar-title>
+      <v-toolbar-title>{{ props.title }}</v-toolbar-title>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" temporary>
@@ -25,6 +25,7 @@
   import {ref} from "vue";
 
 
+  const props = defineProps(['title'])
   const drawer = ref(false)
   const menus = ref([
     {title: '입어볼래?', name: 'DressPage'},
