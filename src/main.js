@@ -16,5 +16,6 @@ import { registerPlugins } from '@/plugins'
 const app = createApp(App)
 
 registerPlugins(app)
+window.Kakao.init('a310713e1f9b37706d54cc971ef30e1b')
 
 app.mount('#app')

@@ -52,6 +52,16 @@ const routes = [
         component: () => import('@/views/my/MyQnAListPage.vue')
       }
     ]
+  },
+  {
+    path: '/login',
+    name: 'LoginPage',
+    component: () => import('@/views/common/LoginPage.vue')
+  },
+  {
+    path:'/register',
+    name: 'RegisterPage',
+    component: ()=> import('@/views/common/RegisterPage.vue')
   }
 ]
 
