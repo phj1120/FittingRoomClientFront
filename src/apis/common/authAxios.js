@@ -15,7 +15,6 @@ const requestRefresh = async () => {
   // 갱신 요청 전송
   const {data} = await axios.post(`${domain}/api/refresh`,
     {access: tokens.access, refresh: tokens.refresh});
-  console.log(data)
 
   // 받아온 정보 클라이언트에 반영
   saveInfo(data)

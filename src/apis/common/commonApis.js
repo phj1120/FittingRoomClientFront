@@ -26,11 +26,10 @@ export const socialSignIn = async (code)=>{
 }
 
 export const socialSignUp = async (userInfo)=>{
+  console.log('[commonApis.socialSignUp]')
   const res = await axios.put(`${domain}/api/consumer/register`, userInfo)
 
-  saveInfo(res.data.data.tokens)
-
-  return res.data.data.consumer
+  return res
 }
 
 

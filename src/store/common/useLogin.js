@@ -6,6 +6,7 @@ const useLogin = defineStore('useLogin',() => {
   const memberInfo = ref({access:null, refresh:null})
 
   const saveInfo = (result) => {
+    console.log(`[useLogin.saveInfo]`)
     console.log(result)
     const {refresh, access} = result
     memberInfo.value.access = access

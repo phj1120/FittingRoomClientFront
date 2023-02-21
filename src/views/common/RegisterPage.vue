@@ -25,19 +25,23 @@ const userInfo = ref({})
 const getUserWithTokens = async () => {
   const res = await socialSignIn(code)
   userInfo.value = res
-
   if (res.coIsSignUp) {
-    console.log('[Register Page]: need more info')
     router.push({name: 'HomePage'})
   }
 }
 getUserWithTokens()
 
 const handleClickSaveButton = async () =>{
-  socialSignUp(userInfo.value)
+  try{
+    const response = await socialSignUp(userInfo.value)
+    if(response.status === 200){
+      await router.push({name: 'HomePage'})
+    }
+  }
+  catch (error){
+    console.log(error)
+  }
 
-  console.log(userInfo.value)
-  router.push({name:'HomePage'})
 }
 
 </script>
