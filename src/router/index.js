@@ -1,5 +1,5 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
   {
@@ -59,9 +59,19 @@ const routes = [
     component: () => import('@/views/common/LoginPage.vue')
   },
   {
-    path:'/register',
+    path: '/register',
     name: 'RegisterPage',
-    component: ()=> import('@/views/common/RegisterPage.vue')
+    component: () => import('@/views/common/RegisterPage.vue')
+  },
+  {
+    path: '/payment',
+    name: 'PaymentPage',
+    component: () => import('@/views/payment/PaymentPage.vue')
+  },
+  {
+    path: '/payment/success',
+    name: 'PaymentSuccessPage',
+    component: () => import('@/views/payment/PaymentSuccessPage.vue')
   }
 ]
 
