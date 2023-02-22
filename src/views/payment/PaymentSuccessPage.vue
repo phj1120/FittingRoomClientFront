@@ -1,15 +1,16 @@
 <template>
-  <h1>Payment Success</h1>
-  {{ route.query.pg_token }}
-
+  <BaseLayout :title="title">
+    <h1>Payment Success</h1>
+    {{ route.query.pg_token }}
+  </BaseLayout>
 </template>
 
 <script setup>
 import {useRoute} from "vue-router";
-import axios from "axios";
 import {ref} from "vue";
 
 const route = useRoute();
+const title = ref('주문 완료')
 
 
 const paymentApproveDTO = ref({
@@ -19,7 +20,6 @@ const paymentApproveDTO = ref({
   'partner_user_id': null,
   'pg_token': route.query.pg_token,
 })
-
 
 
 // requestPaymentApprove()

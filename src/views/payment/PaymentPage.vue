@@ -1,49 +1,71 @@
 <template>
   <BaseLayout :title="title">
-    <h1>payment page {{ route.query.cano }}</h1>
     <PaymentComponent></PaymentComponent>
     <v-row>
-      <v-col cols="12">
-        사용자 정보
-        {{ userInfo }}
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
-        장소 정보
-        {{ roomInfo }}
-      </v-col>
-    </v-row>
-    <v-row>
-      {{ picked }}
-      <Datepicker
-        v-model="picked.date"
-        :inputFormat="inputFormat"
-      />
-
-      <v-select
-        v-model="picked.time"
-        label="Select"
-        :items="ableReservation"
-        item-title="title"
-        item-value="code"
-      ></v-select>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
-        판매 상품 목록
-        <v-row v-for="productInfo in productInfos" :key="productInfos.cpNo">
-          {{ productInfo }}
+      <v-card
+        variant="outlined">
+        <v-row >
+          <v-col cols="12">
+            사용자 정보
+          </v-col>
         </v-row>
-      </v-col>
+          {{ userInfo }}
+      </v-card>
     </v-row>
     <v-row>
-      <v-col cols="12">
-        <v-btn @click="handleClickPaymentButton">결제하기</v-btn>
-      </v-col>
-      <v-btn @click="handleClickPaymentApproveButton">
-        결제 승인
-      </v-btn>
+      <v-card
+        variant="outlined"
+      >
+        <v-col cols="12">
+          <v-row>
+            장소 정보
+          </v-row>
+          <v-row>
+            {{ roomInfo }}
+          </v-row>
+          <v-row class="h-50">
+            <v-col cols="6">
+              <Datepicker
+                v-model="picked.date"
+                inputFormat="yyyy-MM-dd"
+                class="bg-white ml-5 mr-5"
+              />
+            </v-col>
+            <v-col cols="6">
+              <v-select
+                v-model="picked.time"
+                label="Select"
+                :items="ableReservation"
+                item-title="title"
+                item-value="code"
+              ></v-select>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-card>
+    </v-row>
+    <v-row>
+      <v-card
+        variant="outlined">
+        <v-col cols="12">
+          판매 상품 목록
+          <v-row v-for="productInfo in productInfos" :key="productInfos.cpNo">
+            {{ productInfo }}
+          </v-row>
+        </v-col>
+      </v-card>
+    </v-row>
+    <v-row>
+      <v-card>
+        <v-row>
+          <v-col cols="12">
+            <v-btn @click="handleClickPaymentButton">{{paymentReadyDTO.total_amount}} 원 결제하기</v-btn>
+          </v-col>
+        </v-row>
+        <v-btn @click="handleClickPaymentApproveButton">
+          임시 결제 승인 버튼
+        </v-btn>
+      </v-card>
     </v-row>
     <v-row>
       <v-text-field :v-model="paymentApproveDTO.pg_token"/>
@@ -63,8 +85,10 @@ import axios from "axios";
 const route = useRoute();
 const router = useRouter();
 
+const title = ref('주문')
+
+
 const picked = ref({date: new Date(), time: null})
-const inputFormat = ref('yyyy-MM-dd')
 const ableReservation = ref([
   {code: '1', title: '09:00 ~ 09:45'},
   {code: '2', title: '10:00 ~ 10:45'},
@@ -77,7 +101,10 @@ const ableReservation = ref([
   {code: '9', title: '17:00 ~ 17:45'}
 ])
 
-console.log(route.query.cano);
+// 장바구니 아이디
+const caNo = route.query.cano
+
+// 구매자 정보
 const userInfo = ref({
   coNo: null,
   coName: null,
@@ -95,6 +122,7 @@ const userInfo = ref({
   coPostNumber: null
 })
 
+// 장소 정보
 const roomInfo = ref({
   pmNo: null,
   roNo: null,
@@ -107,6 +135,7 @@ const roomInfo = ref({
   roPostCode: null
 })
 
+// 상품 정보
 const productInfos = ref([{
     cpNo: null,
     cpCreateDt: null,
@@ -118,35 +147,24 @@ const productInfos = ref([{
     spSize: null,
     prPrice: null,
     thumbnail: null
-  },
-    {
-      cpNo: null,
-      cpCreateDt: null,
-      cpStatus: null,
-      caNo: null,
-      spNo: null,
-      prName: null,
-      prBrand: null,
-      spSize: null,
-      prPrice: null,
-      thumbnail: null
-    }
-  ]
+  }]
 )
 
+// 상품 준비 요청에 필요한 DTO
 const paymentReadyDTO = ref({
   cid: 'TC0ONETIME',
-  partner_order_id: '123',
-  partner_user_id: 'parh',
-  item_name: '신촌점',
+  partner_order_id: caNo,
+  partner_user_id: userInfo.value.coNo,
+  item_name: `${roomInfo.value.roName} 외 ${productInfos.value.length} 건`,
   quantity: 1,
-  total_amount: 10000,
+  total_amount: 10000, // TODO 예약 가격 필요 ( 방 가격 컬럼 추가 필요 )
   tax_free_amount: 0,
   approval_url: 'http://localhost:3000/payment/success',
   cancel_url: 'http://localhost:3000/payment/cancel',
   fail_url: 'http://localhost:3000/payment/fail'
 })
 
+// 상품 승인 요청에 필요한 DTO
 const paymentApproveDTO = ref({
   cid: 'TC0ONETIME',
   tid: null,
@@ -155,6 +173,12 @@ const paymentApproveDTO = ref({
   pg_token: null
 })
 
+// 결제 하기 버튼
+const handleClickPaymentButton = () => {
+  requestPaymentReady(paymentReadyDTO)
+}
+
+// Kakao 서버에 결제 요청 전송
 const requestPaymentReady = async (paymentReadyDTO) => {
   const paymentDTO = paymentReadyDTO.value
   let formData = new URLSearchParams();
@@ -185,6 +209,30 @@ const requestPaymentReady = async (paymentReadyDTO) => {
   paymentApproveDTO.value.partner_order_id = paymentDTO.partner_order_id
   paymentApproveDTO.value.partner_user_id = paymentDTO.partner_user_id
   // paymentApproveDTO.value.pg_token = pg_token  // TODO 결제 완료 후 나온 토큰 이용해 pg_token 값 지정
+}
+
+// 결제 완료 버튼 // TODO 추후 리다이렉트 후 실행 되도록 변경
+const handleClickPaymentApproveButton = () => {
+  requestPaymentApprove(paymentApproveDTO)
+}
+
+// 결제 승인 요청 백엔드 서버에 요청
+const requestPaymentApprove = async (paymentApproveDTO) => {
+  const approveDTO = {};
+  approveDTO.cid = paymentApproveDTO.cid
+  approveDTO.tid = paymentApproveDTO.tid
+  approveDTO.partner_order_id = paymentApproveDTO.partner_order_id
+  approveDTO.partner_user_id = paymentApproveDTO.partner_user_id
+  approveDTO.pg_token = paymentApproveDTO.pg_token
+
+  const res = await axios.post('http://localhost:8080/api/payment/approve', approveDTO,
+    {
+      headers: {
+        Authorization: 'KakaoAK 92049051ce44ee6c16f4b4ee1b061b2c'
+      },
+    })
+
+  console.log(res)
 }
 
 const windowRef = ref({})
@@ -236,38 +284,6 @@ const closeWinPop = () => {
     windowRef.value.close();
     windowRef.value = null;
   }
-}
-
-const handleClickPaymentButton = () => {
-  requestPaymentReady(paymentReadyDTO)
-}
-
-const handleClickPaymentApproveButton = () => {
-  requestPaymentApprove(paymentApproveDTO)
-}
-const requestPaymentApprove = async (paymentApproveDTO) => {
-  // const approveDTO = paymentApproveDTO.value
-  // let formData = new URLSearchParams();
-  // formData.append('cid', approveDTO.cid);
-  // formData.append('tid', approveDTO.tid);
-  // formData.append('partner_order_id', approveDTO.partner_order_id);
-  // formData.append('partner_user_id', approveDTO.partner_user_id);
-  // formData.append('pg_token', approveDTO.pg_token);
-  const approveDTO = {};
-  approveDTO.cid = paymentApproveDTO.cid
-  approveDTO.tid = paymentApproveDTO.tid
-  approveDTO.partner_order_id = paymentApproveDTO.partner_order_id
-  approveDTO.partner_user_id = paymentApproveDTO.partner_user_id
-  approveDTO.pg_token = paymentApproveDTO.pg_token
-
-  const res = await axios.post('http://localhost:8080/api/payment/approve', approveDTO,
-    {
-      headers: {
-        Authorization: 'KakaoAK 92049051ce44ee6c16f4b4ee1b061b2c'
-      },
-    })
-
-  console.log(res)
 }
 
 </script>
