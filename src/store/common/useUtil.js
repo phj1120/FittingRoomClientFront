@@ -14,6 +14,11 @@ const useUtil = defineStore('useUtil', () => {
     return [year, month, day].join('-')
   }
 
+  const getImageUrl = (path) => {
+    const domain = 'http://localhost:8088'
+    return `${domain}/image/${path}`
+  }
+
   const execDaumPostcode = () => {
     const addressInfo = ref({ address: null, extraAddress: null, postcode: null })
 
@@ -52,7 +57,7 @@ const useUtil = defineStore('useUtil', () => {
   }
 
 
-  return { convertDate, execDaumPostcode }
+  return { convertDate, getImageUrl, execDaumPostcode }
 })
 
 

@@ -37,5 +37,9 @@
 </script>
 
 <style scoped>
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400&display=swap');
 
+  * {
+    font-family: 'Noto Sans KR';
+  }
 </style>
