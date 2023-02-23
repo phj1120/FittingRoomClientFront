@@ -51,6 +51,12 @@ const routes = [
         component: () => import('@/views/my/MyOrderListPage.vue')
       },
       {
+        path: 'order/detail',
+        name: 'OrderDetailPage',
+        component: () => import('@/views/my/MyOrderDetailPage.vue'),
+        props:true
+      },
+      {
         path: 'qna/list',
         name: 'QnAListPage',
         component: () => import('@/views/my/MyQnAListPage.vue')
