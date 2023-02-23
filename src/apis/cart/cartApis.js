@@ -11,10 +11,26 @@ export const getCartList = async (coNo) => {
 }
 
 /**
+ * 장바구니 삭제
+ **/
+export const deleteCart = async (caNo) => {
+  const res = await axios.delete(`${domain}/api/consumer/cart/${caNo}`)
+  return res.data
+}
+
+/**
  * 장바구니 상품 조회
  **/
 export const getCartProducts = async (caNo) => {
   const res = await axios.get(`${domain}/api/consumer/cart/products/${caNo}`)
+  return res.data
+}
+
+/**
+ * 장바구니 상품 삭제
+ **/
+export const deleteCartProduct = async (cpNp) => {
+  const res = await axios.delete(`${domain}/api/consumer/cart/product/${cpNp}`)
   return res.data
 }
 
