@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar>
+    <v-app-bar class="bg-brown-lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ props.title }}</v-toolbar-title>
     </v-app-bar>
@@ -20,7 +20,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="bg-grey-lighten-1">
+    <v-main class="bg-brown-lighten-4">
       <v-container>
         <slot></slot>
       </v-container>

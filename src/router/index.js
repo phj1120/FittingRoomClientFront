@@ -1,5 +1,6 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
+import {tr} from "vuetify/locale";
 
 const routes = [
   {
@@ -16,6 +17,12 @@ const routes = [
         path: 'list',
         name: 'DressListPage',
         component: () => import('@/views/dress/DressListPage.vue')
+      },
+      {
+        path: 'detail/:pmNo',
+        name: 'DressDetailPage',
+        component: () => import('@/views/dress/DressDetailPage.vue'),
+        props: true
       }
     ]
   },
