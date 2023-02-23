@@ -3,8 +3,7 @@
     <PaymentComponent></PaymentComponent>
     <v-row>
       <v-col cols="12">
-        <v-card
-          variant="outlined">
+        <v-card>
           <v-col cols="12">
             <v-row>
               <v-col>
@@ -28,8 +27,7 @@
 
     <v-row>
       <v-col cols="12">
-        <v-card
-          variant="outlined">
+        <v-card>
           <v-col cols="12">
             <v-row>
               <v-col>
@@ -45,9 +43,7 @@
 
             <v-row>
               <v-col cols="6">
-                <Datepicker
-                  v-model="picked.date"
-                  inputFormat="yyyy-MM-dd"/>
+                <VueDatePicker v-model="picked.date" format="yyyy-MM-dd" teleport-center auto-apply/>
               </v-col>
               <v-col cols="6">
                 <v-select
@@ -65,11 +61,10 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-card
-          variant="outlined">
+        <v-card>
           <v-col cols="12">
             <v-row v-for="productInfo in productInfos" :key="productInfo.caNo">
-              {{productInfo}}
+              {{ productInfo }}
               <v-row>
                 <v-col>
                   {{ productInfo.prName }}
@@ -105,9 +100,10 @@
   </BaseLayout>
 </template>
 <script setup>
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 import PaymentComponent from "@/components/payment/PaymentComponent.vue";
 import BaseLayout from "@/layouts/BaseLayout.vue";
-import Datepicker from 'vue3-datepicker';
 import {useRoute, useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import {getPaymentDetail, requestPaymentApprove, requestPaymentReady} from "@/apis/payment/paymentApis";
@@ -202,7 +198,9 @@ const paymentApproveDTO = ref({
   partner_order_id: null,
   partner_user_id: null,
   pg_token: null,
-  cid: 'TC0ONETIME'
+  cid: 'TC0ONETIME',
+  re_dt: null,
+  re_time: null
 })
 
 // 페이지에 필요한 정보 가져오기
@@ -272,6 +270,9 @@ const openWinPop = async (uri, width, height) => {
       paymentApproveDTO.value.partner_order_id = paymentReadyDTO.value.partner_order_id
       paymentApproveDTO.value.partner_user_id = paymentReadyDTO.value.partner_user_id
       paymentApproveDTO.value.pg_token = pgToken
+
+      paymentApproveDTO.value.re_dt = picked.value.date
+      paymentApproveDTO.value.re_time = picked.value.time
 
       clearInterval(interval);
       try {

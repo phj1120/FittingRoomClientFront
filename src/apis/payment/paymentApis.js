@@ -37,6 +37,8 @@ export const requestPaymentApprove = async (paymentApproveDTO) => {
   approveDTO.partner_order_id = paymentApproveDTO.value.partner_order_id
   approveDTO.partner_user_id = paymentApproveDTO.value.partner_user_id
   approveDTO.pg_token = paymentApproveDTO.value.pg_token
+  approveDTO.re_dt = paymentApproveDTO.value.re_dt
+  approveDTO.re_time = paymentApproveDTO.value.re_time
 
   const res = await axios.post('http://localhost:8080/api/payment/approve', approveDTO,
     {
