@@ -60,8 +60,8 @@
       <v-card>
         <v-row>
           <v-col cols="12">
-            <v-btn @click="handleClickPaymentButton">{{ paymentReadyDTO.total_amount }} 원 결제하기</v-btn>
-          </v-col>
+            <v-btn @click="handleClickPaymentButton">{{ payAmount }} 원 결제하기</v-btn>
+          </v-col>payAmount
         </v-row>
         <v-btn @click="handleClickPaymentApproveButton">
           임시 결제 승인 버튼
@@ -72,27 +72,26 @@
       <v-text-field :v-model="paymentApproveDTO.pg_token"/>
     </v-row>
 
-
     <input id="pgToken" :value="paymentApproveDTO.pg_token">
-    {{ paymentApproveDTO.pg_token }}
+    {{ paymentReadyDTO }}
+    <hr/>
     {{ paymentApproveDTO }}
+    <hr/>
+    {{ payAmount }}
   </BaseLayout>
 </template>
 <script setup>
 import PaymentComponent from "@/components/payment/PaymentComponent.vue";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 import Datepicker from 'vue3-datepicker';
-
-
 import {useRoute, useRouter} from "vue-router";
-import {ref} from "vue";
-import axios from "axios";
+import {onMounted, ref} from "vue";
+import {getPaymentDetail, requestPaymentApprove, requestPaymentReady} from "@/apis/payment/paymentApis";
 
 const route = useRoute();
 const router = useRouter();
 
 const title = ref('주문')
-
 
 const picked = ref({date: new Date(), time: null})
 const ableReservation = ref([
@@ -156,14 +155,17 @@ const productInfos = ref([{
   }]
 )
 
+// 가격 정보
+const payAmount = ref(0)
+
 // 상품 준비 요청에 필요한 DTO
 const paymentReadyDTO = ref({
+  partner_order_id: null,
+  partner_user_id: null,
+  item_name: null,
+  total_amount: null,
   cid: 'TC0ONETIME',
-  partner_order_id: caNo,
-  partner_user_id: userInfo.value.coNo,
-  item_name: `${roomInfo.value.roName} 외 ${productInfos.value.length} 건`,
   quantity: 1,
-  total_amount: 10000, // TODO 예약 가격 필요 ( 방 가격 컬럼 추가 필요 )
   tax_free_amount: 0,
   approval_url: 'http://localhost:3000/payment/success',
   cancel_url: 'http://localhost:3000/payment/cancel',
@@ -172,130 +174,91 @@ const paymentReadyDTO = ref({
 
 // 상품 승인 요청에 필요한 DTO
 const paymentApproveDTO = ref({
-  cid: 'TC0ONETIME',
   tid: null,
   partner_order_id: null,
   partner_user_id: null,
-  pg_token: null
+  pg_token: null,
+  cid: 'TC0ONETIME'
 })
 
 // 결제 하기 버튼
-const handleClickPaymentButton = () => {
-  requestPaymentReady(paymentReadyDTO)
-}
+const handleClickPaymentButton = async () => {
+  paymentReadyDTO.value.partner_order_id = caNo
+  paymentReadyDTO.value.partner_user_id = userInfo.value.coNo
+  paymentReadyDTO.value.item_name = `${roomInfo.value.roName} 외 ${productInfos.value.length} 건`
+  paymentReadyDTO.value.total_amount = payAmount.value
 
-// Kakao 서버에 결제 요청 전송
-const requestPaymentReady = async (paymentReadyDTO) => {
-  const paymentDTO = paymentReadyDTO.value
-  let formData = new URLSearchParams();
-  formData.append('cid', paymentDTO.cid);
-  formData.append('partner_order_id', paymentDTO.partner_order_id);
-  formData.append('partner_user_id', paymentDTO.partner_user_id);
-  formData.append('item_name', paymentDTO.item_name);
-  formData.append('quantity', paymentDTO.quantity);
-  formData.append('total_amount', paymentDTO.total_amount);
-  formData.append('tax_free_amount', paymentDTO.tax_free_amount);
-  formData.append('approval_url', paymentDTO.approval_url);
-  formData.append('cancel_url', paymentDTO.cancel_url);
-  formData.append('fail_url', paymentDTO.fail_url);
+  // 결제 요청
+  const res = await requestPaymentReady(paymentReadyDTO)
 
-  const res = await axios.post('https://kapi.kakao.com/v1/payment/ready', formData,
-    {
-      headers: {
-        Authorization: 'KakaoAK 92049051ce44ee6c16f4b4ee1b061b2c'
-      },
-    })
+  // 결제 아이디(tid) 저장
+  paymentApproveDTO.value.tid = res.tid
 
+  console.log('handleClickPaymentButton')
   console.log(res)
 
-  openWinPop(res.data.next_redirect_pc_url, 600, 800)
+  // 기존에 있는 결제 토큰 삭제
+  localStorage.removeItem("pg_token")
 
-  paymentApproveDTO.value.tid = res.data.tid
-  paymentApproveDTO.value.cid = paymentDTO.cid
-  paymentApproveDTO.value.partner_order_id = paymentDTO.partner_order_id
-  paymentApproveDTO.value.partner_user_id = paymentDTO.partner_user_id
-  // paymentApproveDTO.value.pg_token = pg_token  // TODO 결제 완료 후 나온 토큰 이용해 pg_token 값 지정
+  // 결제창 새 창으로 열기
+  await openWinPop(res.next_redirect_pc_url, 600, 800)
 }
 
-// 결제 완료 버튼 // TODO 추후 리다이렉트 후 실행 되도록 변경
-function handleClickPaymentApproveButton() {
-  console.log('handleClickPaymentApproveButton')
-  requestPaymentApprove(paymentApproveDTO)
-}
+// 페이지에 필요한 정보 가져오기
+const getPaymentInfo = async () => {
+  const res = await getPaymentDetail(route.query.cano)
 
-// 결제 승인 요청 백엔드 서버에 요청
-const requestPaymentApprove = async (paymentApproveDTO) => {
-  const approveDTO = {};
-  approveDTO.cid = paymentApproveDTO.cid
-  approveDTO.tid = paymentApproveDTO.tid
-  approveDTO.partner_order_id = paymentApproveDTO.partner_order_id
-  approveDTO.partner_user_id = paymentApproveDTO.partner_user_id
-  approveDTO.pg_token = paymentApproveDTO.pg_token
+  userInfo.value.coNo = res.data.coNo
+  userInfo.value.coName = res.data.coName
+  userInfo.value.coNickname = res.data.coNickname
+  userInfo.value.coGender = res.data.coGender
+  userInfo.value.coBirth = res.data.coBirth
+  userInfo.value.coEmail = res.data.coEmail
+  userInfo.value.coPhone = res.data.coPhone
 
-  const res = await axios.post('http://localhost:8080/api/payment/approve', approveDTO,
-    {
-      headers: {
-        Authorization: 'KakaoAK 92049051ce44ee6c16f4b4ee1b061b2c'
-      },
-    })
+  roomInfo.value.roNo = res.data.roNo
+  roomInfo.value.roName = res.data.roName
+  roomInfo.value.roAddress = res.data.roAddress
+  roomInfo.value.roDetailAddress = res.data.roDetailAddress
+  roomInfo.value.roPostCode = res.data.roPostCode
 
-  console.log(res)
-}
+  productInfos.value = res.data.products.map((product) => {
+    const productInfo = {}
+    productInfo.prName = product.prName
+    productInfo.prBrand = product.prBrand
+    productInfo.spSize = product.spSize
+    productInfo.prPrice = product.prPrice
+    productInfo.thumbnail = product.thumbnail
 
-const windowRef = ref({})
-const isEmptyObject = (param) => {
-  console.log(Object.keys(param).length)
-  return Object.keys(param).length
-  // return Object.keys(param).length === 0 && param.constructor === Object;
+    return productInfo
+  })
+
+  payAmount.value = res.data.payAmount
+  console.log(res.data.payAmount)
 }
 
 const openWinPop = async (uri, width, height) => {
-  console.log(windowRef.value)
-  console.log(!isEmptyObject(windowRef.value))
-  if (!windowRef.value) {
-    closeWinPop();
-  }
-
-  console.log(uri)
   let left = (screen.width) ? (screen.width - width) / 2 : 0;
   let top = (screen.height) ? (screen.height - height) / 2 : 0;
-
   let attr = 'top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + ', resizable=no,status=no';
 
-  // 1. 윈도우 팝업 띄우기
-  // windowRef.value
-  var test = window.open(uri, "", attr);
-  test.onbeforeunload = function () {
-    console.log('창 닫힘')
-    alert("############")
-  }
-  // if (test != null) {
-  //   windowRef.value.addEventListener('beforeunload', evtClose);
-  // } else {
-  //   alert("window.open fail!!!");
-  // }
-
-  // windowRef.value.
-
-  // 2.  새로 띄운 윈도우 팝업창으로 부터 수신 메세지 이벤트 처리
-  // window.addEventListener("message", recvEvtFromChild, false);
+  window.open(uri, "", attr);
+  const interval = setInterval(async () => {
+    let pgToken = localStorage.getItem("pg_token")
+    if (pgToken) {
+      paymentApproveDTO.value.partner_order_id = paymentReadyDTO.value.partner_order_id
+      paymentApproveDTO.value.partner_user_id = paymentReadyDTO.value.partner_user_id
+      paymentApproveDTO.value.pg_token = pgToken
+      clearInterval(interval);
+      await requestPaymentApprove(paymentApproveDTO)
+      localStorage.removeItem("pg_token")
+    }
+  }, 1000)
 }
 
-const evtClose = () => {
-  if (windowRef.value) {
-    windowRef.value.close();
-    windowRef.value = null;
-    // this.$emit('onClose');
-  }
-}
-
-const closeWinPop = () => {
-  console.log('closeWinPop')
-  if (windowRef.value) {
-    windowRef.value.close();
-    windowRef.value = null;
-  }
-}
+onMounted(() => {
+  getPaymentInfo()
+})
 
 </script>
 
