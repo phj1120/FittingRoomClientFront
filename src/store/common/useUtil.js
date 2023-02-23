@@ -62,8 +62,19 @@ const useUtil = defineStore('useUtil', () => {
     return addressInfo.value
   }
 
+  const getReTime = (index) => {
+    const time = ['09:00 ~ 09:45','10:00 ~ 10:45','11:00 ~ 11:45','13:00 ~ 13:45','14:00 ~ 14:45',
+      '15:00 ~ 15:45','16:00 ~ 16:45','17:00 ~ 17:45']
 
-  return { convertDate, getImageUrl, getDefaultImageUrl, execDaumPostcode }
+    return time[index]
+  }
+
+  const listData = ref()
+  const reservationDetailData = (list) => {
+    listData.value = list
+  }
+
+  return { convertDate, getImageUrl, getDefaultImageUrl, execDaumPostcode,getReTime,reservationDetailData,listData }
 })
 
 

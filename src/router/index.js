@@ -1,4 +1,3 @@
-// Composables
 import { createRouter, createWebHistory } from 'vue-router'
 import {tr} from "vuetify/locale";
 
@@ -35,7 +34,12 @@ const routes = [
         path: 'list',
         name: 'CartListPage',
         component: () => import('@/views/cart/CartListPage.vue')
-      }
+      },
+      {
+        path: 'products/:caNo',
+        name: 'CartProductPage',
+        component: () => import('@/views/cart/CartProductPage.vue')
+      },
     ]
   },
   {
@@ -52,6 +56,12 @@ const routes = [
         path: 'order/list',
         name: 'OrderListPage',
         component: () => import('@/views/my/MyOrderListPage.vue')
+      },
+      {
+        path: 'order/detail',
+        name: 'OrderDetailPage',
+        component: () => import('@/views/my/MyOrderDetailPage.vue'),
+        props:true
       },
       {
         path: 'qna/list',
