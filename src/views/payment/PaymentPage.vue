@@ -2,82 +2,106 @@
   <BaseLayout :title="title">
     <PaymentComponent></PaymentComponent>
     <v-row>
-      <v-card
-        variant="outlined">
-        <v-row>
+      <v-col cols="12">
+        <v-card
+          variant="outlined">
           <v-col cols="12">
-            사용자 정보
+            <v-row>
+              <v-col>
+                {{ userInfo.coName }}
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                {{ userInfo.coEmail }}
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                {{ userInfo.coPhone }}
+              </v-col>
+            </v-row>
           </v-col>
-        </v-row>
-        {{ userInfo }}
-      </v-card>
+        </v-card>
+      </v-col>
     </v-row>
-    <v-row>
-      <v-card
-        variant="outlined"
-      >
-        <v-col cols="12">
-          <v-row>
-            장소 정보
-          </v-row>
-          <v-row>
-            {{ roomInfo }}
-          </v-row>
-          <v-row class="h-50">
-            <v-col cols="6">
-              <Datepicker
-                v-model="picked.date"
-                inputFormat="yyyy-MM-dd"
-                class="bg-white ml-5 mr-5"
 
-              />
-            </v-col>
-            <v-col cols="6">
-              <v-select
-                v-model="picked.time"
-                label="Select"
-                :items="ableReservation"
-                item-title="title"
-                item-value="code"
-              ></v-select>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-card>
-    </v-row>
     <v-row>
-      <v-card
-        variant="outlined">
-        <v-col cols="12">
-          판매 상품 목록
-          <v-row v-for="productInfo in productInfos" :key="productInfos.cpNo">
-            {{ productInfo }}
-          </v-row>
-        </v-col>
-      </v-card>
-    </v-row>
-    <v-row>
-      <v-card>
-        <v-row>
+      <v-col cols="12">
+        <v-card
+          variant="outlined">
           <v-col cols="12">
-            <v-btn @click="handleClickPaymentButton">{{ payAmount }} 원 결제하기</v-btn>
-          </v-col>payAmount
-        </v-row>
-        <v-btn @click="handleClickPaymentApproveButton">
-          임시 결제 승인 버튼
-        </v-btn>
-      </v-card>
+            <v-row>
+              <v-col>
+                {{ roomInfo.roName }}
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                {{ roomInfo.roAddress }}
+                {{ roomInfo.roDetailAddress }}
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="6">
+                <Datepicker
+                  v-model="picked.date"
+                  inputFormat="yyyy-MM-dd"/>
+              </v-col>
+              <v-col cols="6">
+                <v-select
+                  v-model="picked.time"
+                  label="Select"
+                  :items="ableReservation"
+                  item-title="title"
+                  item-value="code"
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-card>
+      </v-col>
     </v-row>
     <v-row>
-      <v-text-field :v-model="paymentApproveDTO.pg_token"/>
+      <v-col cols="12">
+        <v-card
+          variant="outlined">
+          <v-col cols="12">
+            <v-row v-for="productInfo in productInfos" :key="productInfo.caNo">
+              {{productInfo}}
+              <v-row>
+                <v-col>
+                  {{ productInfo.prName }}
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  {{ productInfo.coEmail }}
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  {{ productInfo.coPhone }}
+                </v-col>
+              </v-row>
+            </v-row>
+          </v-col>
+        </v-card>
+      </v-col>
     </v-row>
 
-    <input id="pgToken" :value="paymentApproveDTO.pg_token">
-    {{ paymentReadyDTO }}
-    <hr/>
-    {{ paymentApproveDTO }}
-    <hr/>
-    {{ payAmount }}
+    <v-row>
+      <v-col>
+        <v-card>
+          <v-row>
+            <v-col cols="12">
+              <v-btn @click="handleClickPaymentButton">{{ payAmount }} 원 결제하기</v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
   </BaseLayout>
 </template>
 <script setup>
@@ -181,29 +205,6 @@ const paymentApproveDTO = ref({
   cid: 'TC0ONETIME'
 })
 
-// 결제 하기 버튼
-const handleClickPaymentButton = async () => {
-  paymentReadyDTO.value.partner_order_id = caNo
-  paymentReadyDTO.value.partner_user_id = userInfo.value.coNo
-  paymentReadyDTO.value.item_name = `${roomInfo.value.roName} 외 ${productInfos.value.length} 건`
-  paymentReadyDTO.value.total_amount = payAmount.value
-
-  // 결제 요청
-  const res = await requestPaymentReady(paymentReadyDTO)
-
-  // 결제 아이디(tid) 저장
-  paymentApproveDTO.value.tid = res.tid
-
-  console.log('handleClickPaymentButton')
-  console.log(res)
-
-  // 기존에 있는 결제 토큰 삭제
-  localStorage.removeItem("pg_token")
-
-  // 결제창 새 창으로 열기
-  await openWinPop(res.next_redirect_pc_url, 600, 800)
-}
-
 // 페이지에 필요한 정보 가져오기
 const getPaymentInfo = async () => {
   const res = await getPaymentDetail(route.query.cano)
@@ -234,7 +235,29 @@ const getPaymentInfo = async () => {
   })
 
   payAmount.value = res.data.payAmount
-  console.log(res.data.payAmount)
+}
+
+// 결제 하기 버튼
+const handleClickPaymentButton = async () => {
+  paymentReadyDTO.value.partner_order_id = caNo
+  paymentReadyDTO.value.partner_user_id = userInfo.value.coNo
+  paymentReadyDTO.value.item_name = `${roomInfo.value.roName} 외 ${productInfos.value.length} 건`
+  paymentReadyDTO.value.total_amount = payAmount.value
+
+  // 결제 요청
+  const res = await requestPaymentReady(paymentReadyDTO)
+
+  // 결제 아이디(tid) 저장
+  paymentApproveDTO.value.tid = res.tid
+
+  console.log('handleClickPaymentButton')
+  console.log(res)
+
+  // 기존에 있는 결제 토큰 삭제
+  localStorage.removeItem("pg_token")
+
+  // 결제창 새 창으로 열기
+  await openWinPop(res.next_redirect_pc_url, 600, 800)
 }
 
 const openWinPop = async (uri, width, height) => {
@@ -249,9 +272,17 @@ const openWinPop = async (uri, width, height) => {
       paymentApproveDTO.value.partner_order_id = paymentReadyDTO.value.partner_order_id
       paymentApproveDTO.value.partner_user_id = paymentReadyDTO.value.partner_user_id
       paymentApproveDTO.value.pg_token = pgToken
+
       clearInterval(interval);
-      await requestPaymentApprove(paymentApproveDTO)
-      localStorage.removeItem("pg_token")
+      try {
+        const res = await requestPaymentApprove(paymentApproveDTO);
+        console.log(res)
+        await router.push({name: 'OrderListPage'})
+      } catch (err) {
+        console.log(err)
+      } finally {
+        localStorage.removeItem("pg_token")
+      }
     }
   }, 1000)
 }
@@ -259,7 +290,6 @@ const openWinPop = async (uri, width, height) => {
 onMounted(() => {
   getPaymentInfo()
 })
-
 </script>
 
 <style>

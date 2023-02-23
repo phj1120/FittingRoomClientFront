@@ -49,7 +49,7 @@ export const requestPaymentApprove = async (paymentApproveDTO) => {
   console.log('[paymentApis.requestPaymentApprove]')
   console.log(res)
 
-  return res.data
+  return res
 }
 
 export const getPaymentDetail = async (caNo) => {
