@@ -11,7 +11,6 @@
   import router from "@/router";
   import useUtil from "@/store/common/useUtil";
 
-
   const title = ref('마이페이지')
   const pinia = useUtil()
   const handleMoveDetail = (list) => {

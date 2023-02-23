@@ -1,5 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import {tr} from "vuetify/locale";
+import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
   {
@@ -69,6 +68,26 @@ const routes = [
         component: () => import('@/views/my/MyQnAListPage.vue')
       }
     ]
+  },
+  {
+    path: '/login',
+    name: 'LoginPage',
+    component: () => import('@/views/common/LoginPage.vue')
+  },
+  {
+    path: '/register',
+    name: 'RegisterPage',
+    component: () => import('@/views/common/RegisterPage.vue')
+  },
+  {
+    path: '/payment',
+    name: 'PaymentPage',
+    component: () => import('@/views/payment/PaymentPage.vue')
+  },
+  {
+    path: '/payment/success',
+    name: 'PaymentSuccessPage',
+    component: () => import('@/views/payment/PaymentSuccessPage.vue')
   }
 ]
 
