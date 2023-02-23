@@ -1,4 +1,3 @@
-// Composables
 import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
@@ -16,6 +15,12 @@ const routes = [
         path: 'list',
         name: 'DressListPage',
         component: () => import('@/views/dress/DressListPage.vue')
+      },
+      {
+        path: 'detail/:pmNo',
+        name: 'DressDetailPage',
+        component: () => import('@/views/dress/DressDetailPage.vue'),
+        props: true
       }
     ]
   },
@@ -28,7 +33,12 @@ const routes = [
         path: 'list',
         name: 'CartListPage',
         component: () => import('@/views/cart/CartListPage.vue')
-      }
+      },
+      {
+        path: 'products/:caNo',
+        name: 'CartProductPage',
+        component: () => import('@/views/cart/CartProductPage.vue')
+      },
     ]
   },
   {
@@ -45,6 +55,12 @@ const routes = [
         path: 'order/list',
         name: 'OrderListPage',
         component: () => import('@/views/my/MyOrderListPage.vue')
+      },
+      {
+        path: 'order/detail',
+        name: 'OrderDetailPage',
+        component: () => import('@/views/my/MyOrderDetailPage.vue'),
+        props:true
       },
       {
         path: 'qna/list',

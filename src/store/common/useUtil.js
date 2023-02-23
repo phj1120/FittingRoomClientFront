@@ -14,6 +14,17 @@ const useUtil = defineStore('useUtil', () => {
     return [year, month, day].join('-')
   }
 
+  const getImageUrl = (path) => {
+    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8088' : ':3258')
+    return `${domain}/image/${path}`
+  }
+
+  const getDefaultImageUrl = () => {
+    const path = 'd6db4352-620e-4cb9-ae73-a329e38783c1.jpg'
+    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8088' : ':3258')
+    return `${domain}/image/${path}`
+  }
+
   const execDaumPostcode = () => {
     const addressInfo = ref({ address: null, extraAddress: null, postcode: null })
 
@@ -51,8 +62,19 @@ const useUtil = defineStore('useUtil', () => {
     return addressInfo.value
   }
 
+  const getReTime = (index) => {
+    const time = ['09:00 ~ 09:45','10:00 ~ 10:45','11:00 ~ 11:45','13:00 ~ 13:45','14:00 ~ 14:45',
+      '15:00 ~ 15:45','16:00 ~ 16:45','17:00 ~ 17:45']
 
-  return { convertDate, execDaumPostcode }
+    return time[index]
+  }
+
+  const listData = ref()
+  const reservationDetailData = (list) => {
+    listData.value = list
+  }
+
+  return { convertDate, getImageUrl, getDefaultImageUrl, execDaumPostcode,getReTime,reservationDetailData,listData }
 })
 
 
