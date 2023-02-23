@@ -1,4 +1,3 @@
-// Composables
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
@@ -28,7 +27,12 @@ const routes = [
         path: 'list',
         name: 'CartListPage',
         component: () => import('@/views/cart/CartListPage.vue')
-      }
+      },
+      {
+        path: 'products/:caNo',
+        name: 'CartProductPage',
+        component: () => import('@/views/cart/CartProductPage.vue')
+      },
     ]
   },
   {
