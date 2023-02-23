@@ -51,6 +51,7 @@ const cartListInfo = ref([{
 }])
 const longTouchDialog = ref(false)
 const temp = ref()
+let timer = null
 
 /**
  * 장바구니 목록 조회
@@ -79,14 +80,19 @@ const clickCart = (caNo) => {
  **/
 const touchStart = (caNo) => {
   temp.value = caNo
-  setTimeout(() => {
+  timer = setTimeout(() => {
     if (!longTouchDialog.value) {
       longTouchDialog.value = true
       console.log(longTouchDialog.value)
     }
   }, 1000);
 }
+
+/**
+ * 클릭 안하면 삭제 요청 초기화
+ **/
 const touchEnd = () => {
+  clearTimeout(timer)
 }
 
 /**

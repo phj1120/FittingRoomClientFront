@@ -2,13 +2,14 @@
   <v-row>
     <v-col cols="12" md="6" v-for="product in productsInfo" :key="product.cpNo">
       <v-card class="d-flex border-xl" @click="clickProduct(product.cpNo)">
-        <v-col cols="12" class="position-absolute h-100 text-center pa-0 d-flex" style="z-index: 1" v-if="hiddenDiv && product.cpNo == temp">
-            <div class="bg-white w-100 h-25 border-xl font-weight-bold" @click="clickMoveDetail(product.prNo)">
-              <p class="mt-4">상품 상세</p>
-            </div>
-            <div class="bg-white w-100 h-25 border-xl font-weight-bold" @click="clickDelete(product.cpNo)">
-              <p class="mt-4">상품 삭제</p>
-            </div>
+        <v-col cols="12" class="position-absolute h-100 text-center pa-0 d-flex" style="z-index: 1"
+               v-if="hiddenDiv && product.cpNo == temp">
+          <div class="bg-white w-100 h-25 border-xl font-weight-bold" @click="clickMoveDetail(product.prNo)">
+            <p class="mt-4">상품 상세</p>
+          </div>
+          <div class="bg-white w-100 h-25 border-xl font-weight-bold" @click="clickDelete(product.cpNo)">
+            <p class="mt-4">상품 삭제</p>
+          </div>
         </v-col>
         <v-col cols="5" class="ma-auto">
           <v-img max-height="230" max-width="230" :src="getImageUrl(product.thumbnail)"/>

@@ -1,7 +1,8 @@
 <template>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <BaseLayout :title="title">
-    <ListComponent :key="refreshKey" @handleMoveCart="handleMoveCart" @handleRefreshKey="handleRefreshKey"></ListComponent>
+    <ListComponent :key="refreshKey" @handleMoveCart="handleMoveCart"
+                   @handleRefreshKey="handleRefreshKey"></ListComponent>
     <BottomLayout :bottom="bottom" @handleBottomNav="handleBottomNav"></BottomLayout>
   </BaseLayout>
 </template>
