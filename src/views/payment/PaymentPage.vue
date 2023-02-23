@@ -4,12 +4,12 @@
     <v-row>
       <v-card
         variant="outlined">
-        <v-row >
+        <v-row>
           <v-col cols="12">
             사용자 정보
           </v-col>
         </v-row>
-          {{ userInfo }}
+        {{ userInfo }}
       </v-card>
     </v-row>
     <v-row>
@@ -29,6 +29,7 @@
                 v-model="picked.date"
                 inputFormat="yyyy-MM-dd"
                 class="bg-white ml-5 mr-5"
+
               />
             </v-col>
             <v-col cols="6">
@@ -59,7 +60,7 @@
       <v-card>
         <v-row>
           <v-col cols="12">
-            <v-btn @click="handleClickPaymentButton">{{paymentReadyDTO.total_amount}} 원 결제하기</v-btn>
+            <v-btn @click="handleClickPaymentButton">{{ paymentReadyDTO.total_amount }} 원 결제하기</v-btn>
           </v-col>
         </v-row>
         <v-btn @click="handleClickPaymentApproveButton">
@@ -70,6 +71,11 @@
     <v-row>
       <v-text-field :v-model="paymentApproveDTO.pg_token"/>
     </v-row>
+
+
+    <input id="pgToken" :value="paymentApproveDTO.pg_token">
+    {{ paymentApproveDTO.pg_token }}
+    {{ paymentApproveDTO }}
   </BaseLayout>
 </template>
 <script setup>
@@ -202,7 +208,7 @@ const requestPaymentReady = async (paymentReadyDTO) => {
 
   console.log(res)
 
-  const pg_token = openWinPop(res.data.next_redirect_pc_url, 600, 800)
+  openWinPop(res.data.next_redirect_pc_url, 600, 800)
 
   paymentApproveDTO.value.tid = res.data.tid
   paymentApproveDTO.value.cid = paymentDTO.cid
@@ -212,7 +218,8 @@ const requestPaymentReady = async (paymentReadyDTO) => {
 }
 
 // 결제 완료 버튼 // TODO 추후 리다이렉트 후 실행 되도록 변경
-const handleClickPaymentApproveButton = () => {
+function handleClickPaymentApproveButton() {
+  console.log('handleClickPaymentApproveButton')
   requestPaymentApprove(paymentApproveDTO)
 }
 
@@ -241,6 +248,7 @@ const isEmptyObject = (param) => {
   return Object.keys(param).length
   // return Object.keys(param).length === 0 && param.constructor === Object;
 }
+
 const openWinPop = async (uri, width, height) => {
   console.log(windowRef.value)
   console.log(!isEmptyObject(windowRef.value))
@@ -255,19 +263,22 @@ const openWinPop = async (uri, width, height) => {
   let attr = 'top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + ', resizable=no,status=no';
 
   // 1. 윈도우 팝업 띄우기
-  windowRef.value = window.open(uri, "", attr);
-  if (windowRef.value != null) {
-    windowRef.value.addEventListener('beforeunload', evtClose);
-  } else {
-    alert("window.open fail!!!");
+  // windowRef.value
+  var test = window.open(uri, "", attr);
+  test.onbeforeunload = function () {
+    console.log('창 닫힘')
+    alert("############")
   }
+  // if (test != null) {
+  //   windowRef.value.addEventListener('beforeunload', evtClose);
+  // } else {
+  //   alert("window.open fail!!!");
+  // }
+
+  // windowRef.value.
 
   // 2.  새로 띄운 윈도우 팝업창으로 부터 수신 메세지 이벤트 처리
   // window.addEventListener("message", recvEvtFromChild, false);
-
-  console.log('hi')
-
-  return 'pg_token'
 }
 
 const evtClose = () => {
