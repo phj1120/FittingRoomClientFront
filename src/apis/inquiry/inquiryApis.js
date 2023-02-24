@@ -27,13 +27,31 @@ export const getInquiry = async (inNo) => {
 }
 
 /**
+ * Q&A 추가
+ **/
+export const addInquiry = async (inquiryInfo) => {
+  const formData = new FormData();
+  formData.append('inTitle', inquiryInfo.inTitle)
+  formData.append('inContent', inquiryInfo.inContent)
+  formData.append('inStatus', inquiryInfo.inStatus)
+  formData.append('pmNo', inquiryInfo.pmNo)
+  // formData.append('seNo', inquiryInfo.seNo)
+  formData.append('coNo', inquiryInfo.coNo)
+  const res = await axios.post(`${domain}/api/consumer/inquiry/`, formData)
+
+  return res.data
+}
+
+/**
  * Q&A 수정
  **/
 export const updateInquiry = async (inquiryInfo) => {
-  const params = {inTitle: inquiryInfo.inTitle, inContent: inquiryInfo.inContent, inStatus: inquiryInfo.inStatus}
-  const res = await axios.put(`${domain}/api/consumer/inquiry/${inquiryInfo.inNo}`, {params: params})
+  const formData = new FormData();
+  formData.append('inTitle', inquiryInfo.inTitle)
+  formData.append('inContent', inquiryInfo.inContent)
+  formData.append('inStatus', inquiryInfo.inStatus)
+  const res = await axios.put(`${domain}/api/consumer/inquiry/${inquiryInfo.inNo}`, formData)
 
-  console.log(params)
   return res.data
 }
 

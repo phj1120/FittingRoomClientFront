@@ -61,6 +61,11 @@ const routes = [
         name: 'InquiryUpdatePage',
         component: () => import('@/views/inquiry/InquiryUpdatePage.vue')
       },
+      {
+        path: 'add',
+        name: 'InquiryAddPage',
+        component: () => import('@/views/inquiry/InquiryAddPage.vue')
+      },
     ]
   },
   {
