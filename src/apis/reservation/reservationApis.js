@@ -8,3 +8,9 @@ export const getReservaiontListApi = async () => {
   console.log(res.data)
   return res.data
 }
+
+export const getReservaiontDetailApi = async (orNo) => {
+  const res = await axios.get(`${domain}/api/reservation/detail/products/${orNo}`)
+  console.log(res.data)
+  return res.data
+}

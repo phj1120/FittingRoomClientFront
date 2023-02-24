@@ -1,16 +1,17 @@
 <template>
-  <v-row>
-    <v-col  cols="12" md="6">
+ <v-row>
+    <v-col  cols="12" md="12">
       <v-card
         class="mx-auto"
       >
-        <v-row align="center">
+        <v-row justify="center">
           <v-col>
-          <v-card-title v-text="props.listData.roName"></v-card-title>
+          <v-card-title>{{itemList.roName}}</v-card-title>
           </v-col>
         <v-col >
           <div>예약일</div>
-          <p> {{props.listData.reDt}}</p>
+          <p> {{itemList.reDt}}</p>
+          <p> {{itemList.reTime}}</p>
       </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -18,8 +19,8 @@
           <v-row>
 
             <v-col>
-              <p>주소 : {{props.listData.roAddress +' '+ props.listData.roDetailAddress}} </p>
-              <p>장소대여료 : {{props.listData.rePrice}}</p>
+              <p>주소 : {{itemList.roAddress +' '+ itemList.roDetailAddress}} </p>
+              <p>장소대여료 : {{itemList.rePrice}}</p>
             </v-col>
           </v-row>
         </v-card-item>
@@ -42,7 +43,7 @@
           </thead>
           <tbody>
           <tr
-            v-for="(item,index) in itemList"
+            v-for="(item,index) in cartItemList"
             :key="index"
           >
             <td class="text-center">{{ item.prName }}</td>
@@ -53,27 +54,33 @@
           </tbody>
         </v-table>
       </v-card>
-
-      <!--              <v-sheet height="300"></v-sheet>-->
     </v-col>
   </v-row>
+
 </template>
 
 <script setup>
 import {onMounted, ref} from "vue";
+import {getReservaiontDetailApi} from "@/apis/reservation/reservationApis";
 import {getReservationItemListApi} from "@/apis/cart/cartApis";
 
-const props = defineProps(['listData'])
+const props = defineProps(['orNo'])
 
-const itemList = ref()
+const itemList = ref({})
+const cartItemList = ref({})
 
-const getItemList = async () =>{
+const getReservationData = async ()=>{
+  itemList.value = await getReservaiontDetailApi(props.orNo)
+  await getItemList(itemList.value.caNo)
 
-  itemList.value = await getReservationItemListApi(props.listData.caNo)
-  console.log(itemList.value)
+}
+const getItemList = async (caNo) =>{
+  console.log(itemList.value.caNo)
+  cartItemList.value = await getReservationItemListApi(caNo)
+
 }
 onMounted(()=>{
-  getItemList()
+  getReservationData()
 })
 </script>
 

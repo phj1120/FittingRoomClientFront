@@ -4,7 +4,7 @@
         <v-card
           class="mx-auto"
         >
-          <v-card-title v-text="list.orStatus"></v-card-title>
+          <v-card-title >{{list.orStatus}}</v-card-title>
           <v-card-item>
             <v-row>
               <v-col>
@@ -18,7 +18,7 @@
                 <p>장소대여료 : {{list.rePrice}}</p>
 
 
-                  <v-btn variant="outlined" @click="emits('handleMoveDetail',list)">
+                  <v-btn variant="outlined" @click="emits('handleMoveDetail',list.orNo)">
                     예약상세보기
                   </v-btn>
 
