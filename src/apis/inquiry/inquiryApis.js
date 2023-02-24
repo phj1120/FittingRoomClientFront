@@ -7,14 +7,10 @@ const domain = 'http://' + window.location.hostname + (window.location.hostname.
  * Q&A 목록 조회
  **/
 export const getInquiryList = async (pageSearch) => {
-  let params = {coNo: 1, size: null, page: null}
+  const params = {coNo: 1, size: pageSearch.size, page: pageSearch.page}
 
   // 사용자
   params.coNo = pageSearch.coNo
-
-  // 페이징
-  params.size = pageSearch.size
-  params.page = pageSearch.page
 
   const res = await axios.get(`${domain}/api/consumer/inquiry/list`, {params: params})
 
@@ -33,8 +29,19 @@ export const getInquiry = async (inNo) => {
 /**
  * Q&A 수정
  **/
-export const updateInquiry = async (inNo) => {
-  const res = await axios.put(`${domain}/api/consumer/inquiry/${inNo}`)
+export const updateInquiry = async (inquiryInfo) => {
+  const params = {inTitle: inquiryInfo.inTitle, inContent: inquiryInfo.inContent, inStatus: inquiryInfo.inStatus}
+  const res = await axios.put(`${domain}/api/consumer/inquiry/${inquiryInfo.inNo}`, {params: params})
+
+  console.log(params)
+  return res.data
+}
+
+/**
+ * Q&A 삭제
+ **/
+export const deleteInquiry = async (inNo) => {
+  const res = await axios.delete(`${domain}/api/consumer/inquiry/${inNo}`)
 
   return res.data
 }
