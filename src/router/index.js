@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
   {
@@ -15,6 +15,12 @@ const routes = [
         path: 'list',
         name: 'DressListPage',
         component: () => import('@/views/dress/DressListPage.vue')
+      },
+      {
+        path: 'detail/:pmNo',
+        name: 'DressDetailPage',
+        component: () => import('@/views/dress/DressDetailPage.vue'),
+        props: true
       }
     ]
   },
@@ -73,11 +79,37 @@ const routes = [
         component: () => import('@/views/my/MyOrderListPage.vue')
       },
       {
+        path: 'order/detail',
+        name: 'OrderDetailPage',
+        component: () => import('@/views/my/MyOrderDetailPage.vue'),
+        props:true
+      },
+      {
         path: 'qna/list',
         name: 'QnAListPage',
         component: () => import('@/views/my/MyQnAListPage.vue')
       }
     ]
+  },
+  {
+    path: '/login',
+    name: 'LoginPage',
+    component: () => import('@/views/common/LoginPage.vue')
+  },
+  {
+    path: '/register',
+    name: 'RegisterPage',
+    component: () => import('@/views/common/RegisterPage.vue')
+  },
+  {
+    path: '/payment',
+    name: 'PaymentPage',
+    component: () => import('@/views/payment/PaymentPage.vue')
+  },
+  {
+    path: '/payment/success',
+    name: 'PaymentSuccessPage',
+    component: () => import('@/views/payment/PaymentSuccessPage.vue')
   }
 ]
 
