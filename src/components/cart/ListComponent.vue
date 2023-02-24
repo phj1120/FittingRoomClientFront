@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="6" v-for="cart in cartListInfo" :key="cart.caNo">
-      <v-card class="d-flex border-xl" @click="clickCart(cart.caNo)" @touchstart="touchStart"
+      <v-card class="d-flex border-xl" @click="clickCart(cart.caNo)" @touchstart="touchStart(cart.caNo)"
               @touchend="touchEnd">
         <v-col cols="5">
           <v-img
@@ -16,14 +16,16 @@
       <div :key="longTouchDialog" class="d-flex">
         <DialogsComponent :dialog="longTouchDialog">
           <template v-slot:dialogContent>
-            삭제하시겠습니까?
+            <p class="ma-5 mb-0">
+              정말 삭제하시겠습니까?
+            </p>
           </template>
           <template v-slot:dialogBtn>
             <v-col class="text-center">
-              <v-btn @click="clickCancel" class="mr-2">
+              <v-btn @click="clickCancel" class="mr-10">
                 취소
               </v-btn>
-              <v-btn @click="clickDelete(cart.caNo)" color="red">
+              <v-btn @click="clickDelete()" color="red">
                 삭제
               </v-btn>
             </v-col>
@@ -36,11 +38,11 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {getCartList} from "@/apis/cart/cartApis";
+import {deleteCart, getCartList} from "@/apis/cart/cartApis";
 import {comma} from "../../utils/util";
 import DialogsComponent from "@/components/common/DialogsComponent.vue";
 
-const emits = defineEmits(['handleMoveCart'])
+const emits = defineEmits(['handleMoveCart', 'handleRefreshKey'])
 const cartListInfo = ref([{
   caNo: null,
   roName: null,
@@ -48,6 +50,8 @@ const cartListInfo = ref([{
   totalPrice: null
 }])
 const longTouchDialog = ref(false)
+const temp = ref()
+let timer = null
 
 /**
  * 장바구니 목록 조회
@@ -67,28 +71,38 @@ onMounted(() => {
  **/
 const clickCart = (caNo) => {
   emits("handleMoveCart", caNo)
+
+  return temp
 }
 
 /**
  * 길게 클릭 시 삭제 요청
  **/
-const touchStart = () => {
-  setTimeout(() => {
+const touchStart = (caNo) => {
+  temp.value = caNo
+  timer = setTimeout(() => {
     if (!longTouchDialog.value) {
       longTouchDialog.value = true
       console.log(longTouchDialog.value)
     }
   }, 1000);
 }
+
+/**
+ * 클릭 안하면 삭제 요청 초기화
+ **/
 const touchEnd = () => {
+  clearTimeout(timer)
 }
 
 /**
  * 장바구니 삭제
  **/
-const clickDelete = (caNo) => {
-  console.log(caNo)
+const clickDelete = async () => {
+  console.log(temp.value)
+  await deleteCart(temp.value)
   longTouchDialog.value = false
+  emits('handleRefreshKey')
 }
 
 /**
