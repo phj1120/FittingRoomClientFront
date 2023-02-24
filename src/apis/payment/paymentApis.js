@@ -1,4 +1,5 @@
 import axios from "axios";
+import authAxios from "@/apis/common/authAxios";
 
 const domain = 'http://' + window.location.hostname + ':8080'
 
@@ -37,8 +38,10 @@ export const requestPaymentApprove = async (paymentApproveDTO) => {
   approveDTO.partner_order_id = paymentApproveDTO.value.partner_order_id
   approveDTO.partner_user_id = paymentApproveDTO.value.partner_user_id
   approveDTO.pg_token = paymentApproveDTO.value.pg_token
+  approveDTO.re_dt = paymentApproveDTO.value.re_dt
+  approveDTO.re_time = paymentApproveDTO.value.re_time
 
-  const res = await axios.post('http://localhost:8080/api/payment/approve', approveDTO,
+  const res = await authAxios.post(`${domain}/api/payment/approve`, approveDTO,
     {
       headers: {
         Authorization: 'KakaoAK 92049051ce44ee6c16f4b4ee1b061b2c'
@@ -53,7 +56,7 @@ export const requestPaymentApprove = async (paymentApproveDTO) => {
 }
 
 export const getPaymentDetail = async (caNo) => {
-  const res = await axios.get(`${domain}/api/payment/${caNo}`)
+  const res = await authAxios.get(`${domain}/api/payment/${caNo}`)
 
   console.log('[paymentApis.getPayments]')
   console.log(res)
@@ -61,7 +64,7 @@ export const getPaymentDetail = async (caNo) => {
 }
 
 export const getAbleReservationTime = async (roNo, reservationDt) => {
-  const res = await axios.get(`${domain}/api/payment/ableReservation`, {
+  const res = await authAxios.get(`${domain}/api/payment/ableReservation`, {
     roNo: roNo, reservationDt: reservationDt
   })
 
