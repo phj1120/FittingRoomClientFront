@@ -15,7 +15,7 @@
           </template>
           <v-list-item :to="{ name: 'OrderListPage' }" value="주문내역" title="주문내역" link></v-list-item>
           <v-list-item :to="{ name: 'MyProfilePage' }" value="회원정보" title="회원정보" link></v-list-item>
-          <v-list-item :to="{ name: 'QnAListPage' }" value="Q&A" title="Q&A" link></v-list-item>
+          <v-list-item :to="{ name: 'InquiryListPage' }" value="Q&A" title="Q&A" link></v-list-item>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
@@ -31,9 +31,8 @@
 <script setup>
   import {ref} from "vue";
 
-
   const props = defineProps(['title'])
-  const drawer = ref(false)
+  let drawer = ref(false)
 </script>
 
 <style scoped>

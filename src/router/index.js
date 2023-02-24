@@ -36,6 +36,28 @@ const routes = [
     ]
   },
   {
+    path: '/inquiry',
+    name: 'InquiryPage',
+    redirect: '/inquiry/list',
+    children: [
+      {
+        path: 'list',
+        name: 'InquiryListPage',
+        component: () => import('@/views/inquiry/InquiryListPage.vue')
+      },
+      {
+        path: 'detail/:inNo',
+        name: 'InquiryDetailPage',
+        component: () => import('@/views/inquiry/InquiryDetailPage.vue')
+      },
+      {
+        path: 'update/:inNo',
+        name: 'InquiryUpdatePage',
+        component: () => import('@/views/inquiry/InquiryUpdatePage.vue')
+      },
+    ]
+  },
+  {
     path: '/my',
     name: 'MyPage',
     redirect: '/my/profile',
