@@ -3,6 +3,9 @@
     <v-app-bar class="bg-brown-lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ props.title }}</v-toolbar-title>
+      <v-toolbar-items>
+        <v-icon icon="mdi-vuetify"></v-icon>
+      </v-toolbar-items>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" temporary>
