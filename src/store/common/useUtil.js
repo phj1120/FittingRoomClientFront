@@ -15,13 +15,13 @@ const useUtil = defineStore('useUtil', () => {
   }
 
   const getImageUrl = (path) => {
-    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8088' : ':3258')
+    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':7070' : ':3256')
     return `${domain}/image/${path}`
   }
 
   const getDefaultImageUrl = () => {
     const path = 'd6db4352-620e-4cb9-ae73-a329e38783c1.jpg'
-    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8088' : ':3258')
+    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':7070' : ':3256')
     return `${domain}/image/${path}`
   }
 
