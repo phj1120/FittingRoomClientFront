@@ -2,7 +2,7 @@ import axios from "axios";
 import useLogin from "@/store/common/useLogin";
 import authAxios from "@/apis/common/authAxios";
 
-const domain = 'http://' + window.location.hostname + ':8080'
+const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3256')
 
 const {saveInfo} = useLogin()
 

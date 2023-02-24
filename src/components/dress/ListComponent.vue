@@ -7,7 +7,7 @@
 
             <v-card-title>{{ room.roName }}</v-card-title>
 
-            <v-card-subtitle>{{ room.roAddress + room.roDetailAddress }}</v-card-subtitle>
+            <v-card-subtitle>{{ room.roAddress + ' ' + room.roDetailAddress }}</v-card-subtitle>
           </v-col>
           <v-card-actions><v-btn class="font-weight-bold" color="orange" variant="text">입점 브랜드</v-btn>
 
