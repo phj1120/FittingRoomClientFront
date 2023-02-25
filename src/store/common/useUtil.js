@@ -14,13 +14,18 @@ const useUtil = defineStore('useUtil', () => {
     return [year, month, day].join('-')
   }
 
-  const getImageUrl = (path) => {
-    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':7070' : ':3256')
-    return `${domain}/image/${path}`
+  const getRoomImageUrl = (path) => {
+    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
+    return `${domain}/image/room/${path}`
   }
 
-  const getDefaultImageUrl = () => {
-    const path = 'd6db4352-620e-4cb9-ae73-a329e38783c1.jpg'
+  const getProductImageUrl = (path) => {
+    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
+    return `${domain}/image/product/${ 's_' + path}`
+  }
+
+  const getDefaultRoomImageUrl = () => {
+    const path = 'e3d90340-265d-485c-9ed4-a7a864ddd006.jpg'
     const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':7070' : ':3256')
     return `${domain}/image/${path}`
   }
@@ -74,7 +79,7 @@ const useUtil = defineStore('useUtil', () => {
     listData.value = list
   }
 
-  return { convertDate, getImageUrl, getDefaultImageUrl, execDaumPostcode,getReTime,reservationDetailData,listData }
+  return { convertDate, getRoomImageUrl, getProductImageUrl, getDefaultRoomImageUrl, execDaumPostcode,getReTime,reservationDetailData,listData }
 })
 
 
