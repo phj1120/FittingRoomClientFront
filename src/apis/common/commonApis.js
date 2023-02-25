@@ -1,9 +1,10 @@
 import axios from "axios";
 import useLogin from "@/store/common/useLogin";
+import authAxios from "@/apis/common/authAxios";
 
-const domain = 'http://' + window.location.hostname + ':8080'
+const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3256')
 
-const {getTokens, saveInfo} = useLogin()
+const {saveInfo} = useLogin()
 
 // userInfo:{memberId:null, password:null}
 export const signIn = async (userInfo) => {
@@ -17,7 +18,7 @@ export const signIn = async (userInfo) => {
   return res.data
 }
 
-export const socialSignIn = async (code)=>{
+export const socialSignIn = async (code) => {
   const res = await axios.post(`${domain}/api/oauth/kakao/${code}`)
 
   saveInfo(res.data.data.tokens)
@@ -25,9 +26,9 @@ export const socialSignIn = async (code)=>{
   return res.data.data.consumer
 }
 
-export const socialSignUp = async (userInfo)=>{
+export const socialSignUp = async (userInfo) => {
   console.log('[commonApis.socialSignUp]')
-  const res = await axios.put(`${domain}/api/consumer/register`, userInfo)
+  const res = await authAxios.put(`${domain}/api/consumer/register`, userInfo)
 
   return res
 }

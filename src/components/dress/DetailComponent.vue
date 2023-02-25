@@ -2,20 +2,29 @@
   <v-row>
     <v-col cols="12" md="6" v-for="seller in sellerList" :key="seller.seNo">
       <v-card>
-        <v-card-item>
-          <div>
-            <div class="text-h6 mb-6">
-              {{ seller.seName }}
-            </div>
-            <v-row>
-              <v-col cols="6" md="3" v-for="product in seller.productList" :key="product.prName">
-                <v-card>
-                  {{ product.prName }}
-<!--                  <v-img :src="getImageUrl( product.prName )"></v-img>-->
+        <v-card-title class="text-center pt-5">
+          {{ seller.seName }}
+        </v-card-title>
+        <v-card-item class="pb-0 pt-5">
+          <v-row>
+            <v-slide-group selected-class="bg-success" show-arrows >
+              <v-slide-group-item v-for="product in seller.productList" :key="product.prName" v-slot="{ selectedClass }">
+                <v-card color="grey-lighten-1" :class="['ma-3', selectedClass]" height="160" width="160" link>
+                  <div class="d-flex fill-height align-center justify-center">
+                    {{ product.prName }}
+                  </div>
                 </v-card>
-              </v-col>
-            </v-row>
-          </div>
+              </v-slide-group-item>
+            </v-slide-group>
+<!--            <v-row>-->
+<!--              <v-col cols="6" md="3" v-for="product in seller.productList" :key="product.prName">-->
+<!--                <v-card>-->
+<!--                  {{ product.prName }}-->
+<!--                  <v-img :src="getImageUrl( product.prName )"></v-img>-->
+<!--                </v-card>-->
+<!--              </v-col>-->
+<!--            </v-row>-->
+          </v-row>
         </v-card-item>
 
         <v-card-actions>
