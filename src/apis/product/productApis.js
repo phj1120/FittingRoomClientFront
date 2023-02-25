@@ -1,7 +1,7 @@
 import authAxios from "@/apis/common/authAxios";
 
 
-const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3256')
+const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
 
 
 export const getSellerProductList = async ( seNo ) => {

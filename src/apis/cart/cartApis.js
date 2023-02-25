@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3256')
+const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
 
 /**
  * 장바구니 목록 조회
@@ -28,7 +28,7 @@ export const getCartProducts = async (caNo) => {
 
 
 export const getReservationItemListApi = async (caNo) => {
-  const res = await axios.get(`${domain}/api/reservation/detail/products/${caNo}`)  
+  const res = await axios.get(`${domain}/api/reservation/detail/products/${caNo}`)
   return res.data
 }
 
