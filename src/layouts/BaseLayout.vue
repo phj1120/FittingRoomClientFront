@@ -38,8 +38,14 @@
 
 <style scoped>
   @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+
 
   * {
     font-family: 'Noto Sans KR';
+    /*font-family: 'Nanum Pen Script';*/
+    /*font-family: 'Nanum Gothic', sans-serif;*/
+
   }
 </style>

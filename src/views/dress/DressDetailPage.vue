@@ -1,6 +1,6 @@
 <template>
   <BaseLayout :title="title">
-    <DetailComponent :pmNo="props.pmNo"></DetailComponent>
+    <DetailComponent :pmNo="props.pmNo" @handleClickProduct="handleClickProduct"></DetailComponent>
   </BaseLayout>
 </template>
 
@@ -17,5 +17,7 @@
   const title = ref('입어볼래?')
 
 
-
+  const handleClickProduct = ( prNo ) => {
+    router.push({ name: 'DressProductPage', params: { prNo: prNo } })
+  }
 </script>
