@@ -8,7 +8,9 @@
         <p class="ma-2 mt-5">제목</p>
         <v-text-field v-model="inquiryInfo.inTitle"></v-text-field>
         <p class="ma-2 mt-0">질문유형</p>
-        <v-text-field readonly>{{ inquiryInfo.inType }}</v-text-field>
+        <v-text-field v-if="inquiryInfo.inType=='PLACE'?changeName.inType='장소':changeName.inType='상품'" readonly>
+          {{ changeName.inType }}
+        </v-text-field>
         <p class="ma-2 mt-0">대상</p>
         <v-text-field readonly>{{ inquiryInfo.name }}</v-text-field>
         <p class="ma-2 mt-0">질문내용</p>
@@ -57,6 +59,7 @@ const inquiryInfo = ref({
   name: null
 })
 const deleteDialog = ref(false)
+const changeName = ref({inType: null})
 
 /**
  * Q&A 상세 불러오기

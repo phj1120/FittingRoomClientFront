@@ -1,4 +1,4 @@
-import axios from "axios";
+import authAxios from "@/apis/common/authAxios";
 
 
 const domain = 'http://' + window.location.hostname + (window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
@@ -12,7 +12,7 @@ export const getInquiryList = async (pageSearch) => {
   // 사용자
   params.coNo = pageSearch.coNo
 
-  const res = await axios.get(`${domain}/api/consumer/inquiry/list`, {params: params})
+  const res = await authAxios.get(`${domain}/api/consumer/inquiry/list`, {params: params})
 
   return res.data
 }
@@ -21,7 +21,7 @@ export const getInquiryList = async (pageSearch) => {
  * Q&A 상세 조회
  **/
 export const getInquiry = async (inNo) => {
-  const res = await axios.get(`${domain}/api/consumer/inquiry/${inNo}`)
+  const res = await authAxios.get(`${domain}/api/consumer/inquiry/${inNo}`)
 
   return res.data
 }
@@ -37,7 +37,7 @@ export const addInquiry = async (inquiryInfo) => {
   formData.append('pmNo', inquiryInfo.pmNo)
   // formData.append('seNo', inquiryInfo.seNo)
   formData.append('coNo', inquiryInfo.coNo)
-  const res = await axios.post(`${domain}/api/consumer/inquiry/`, formData)
+  const res = await authAxios.post(`${domain}/api/consumer/inquiry/`, formData)
 
   return res.data
 }
@@ -50,7 +50,7 @@ export const updateInquiry = async (inquiryInfo) => {
   formData.append('inTitle', inquiryInfo.inTitle)
   formData.append('inContent', inquiryInfo.inContent)
   formData.append('inStatus', inquiryInfo.inStatus)
-  const res = await axios.put(`${domain}/api/consumer/inquiry/${inquiryInfo.inNo}`, formData)
+  const res = await authAxios.put(`${domain}/api/consumer/inquiry/${inquiryInfo.inNo}`, formData)
 
   return res.data
 }
@@ -59,7 +59,7 @@ export const updateInquiry = async (inquiryInfo) => {
  * Q&A 삭제
  **/
 export const deleteInquiry = async (inNo) => {
-  const res = await axios.delete(`${domain}/api/consumer/inquiry/${inNo}`)
+  const res = await authAxios.delete(`${domain}/api/consumer/inquiry/${inNo}`)
 
   return res.data
 }

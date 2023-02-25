@@ -8,11 +8,15 @@
         <p class="ma-2 mt-5">제목</p>
         <v-text-field readonly>{{ inquiryInfo.inTitle }}</v-text-field>
         <p class="ma-2 mt-0">질문유형</p>
-        <v-text-field readonly>{{ inquiryInfo.inType }}</v-text-field>
+        <v-text-field v-if="inquiryInfo.inType=='PLACE'?changeName.inType='장소':changeName.inType='상품'" readonly>
+          {{ changeName.inType }}
+        </v-text-field>
         <p class="ma-2 mt-0">대상</p>
         <v-text-field readonly>{{ inquiryInfo.name }}</v-text-field>
         <p class="ma-2 mt-0">답변여부</p>
-        <v-text-field readonly>{{ inquiryInfo.inStatus }}</v-text-field>
+        <v-text-field v-if="inquiryInfo.inStatus=='WAITING'?changeName.inStatus='대기중':changeName.inStatus='답변완료'" readonly>
+          {{ changeName.inStatus }}
+        </v-text-field>
         <p class="ma-2 mt-0">질문내용</p>
         <v-text-field readonly>{{ inquiryInfo.inContent }}</v-text-field>
       </v-card>
@@ -31,6 +35,10 @@ const inquiryInfo = ref({
   inStatus: null,
   inType: null,
   name: null
+})
+const changeName = ref({
+  inType: null,
+  inStatus: null
 })
 
 /**

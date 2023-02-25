@@ -15,11 +15,16 @@
           </tr>
           </thead>
           <tbody>
-          <tr class="text-center" v-for="inquiry in inquiryList" :key="inquiry.inNo" @click="clickInquiry(inquiry.inNo)">
+          <tr class="text-center" v-for="inquiry in inquiryList" :key="inquiry.inNo"
+              @click="clickInquiry(inquiry.inNo)">
             <td>{{ inquiry.inNo }}</td>
             <td class="text-left">{{ inquiry.inTitle }}</td>
-            <td>{{ inquiry.inType }}</td>
-            <td>{{ inquiry.inStatus }}</td>
+            <td v-if="inquiry.inType=='PLACE'?changeName.inType='장소':changeName.inType='상품'">
+              {{ changeName.inType }}
+            </td>
+            <td v-if="inquiry.inStatus=='WAITING'?changeName.inStatus='대기중':changeName.inStatus='답변완료'">
+              {{ changeName.inStatus }}
+            </td>
           </tr>
           </tbody>
         </v-table>
@@ -44,6 +49,10 @@ const inquiryList = ref([{
   inType: null,
   inStatus: null
 }])
+const changeName = ref({
+  inType: null,
+  inStatus: null
+})
 
 /**
  * Q&A 목록 조회
