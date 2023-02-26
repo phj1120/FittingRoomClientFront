@@ -4,7 +4,12 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ props.title }}</v-toolbar-title>
       <v-toolbar-items>
-        <v-icon icon="mdi-vuetify"></v-icon>
+        <v-btn v-if="!isLogin()" :to="{name:'LoginPage'}">
+          <v-icon icon="mdi-account-arrow-left" ></v-icon>
+        </v-btn>
+        <v-btn v-else @click="logout">
+          <v-icon icon="mdi-account-arrow-right"></v-icon>
+        </v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -33,7 +38,8 @@
 
 <script setup>
   import {ref} from "vue";
-
+  import useLogin from "@/store/common/useLogin";
+  const {isLogin, logout} = useLogin();
 
   const props = defineProps(['title'])
   const drawer = ref(false)

@@ -54,11 +54,12 @@ authAxios.interceptors.response.use((response) => {
         console.log('authAxios.interceptors: Refresh Error')
         console.log(eee)
 
-        router.push({name: 'LoginPagePre'})
+        router.push({name: 'LoginPage'})
 
         return Promise.reject(eee);
       }
     }
+    router.push({name: 'LoginPage'})
 
     return Promise.reject(error);
   }
