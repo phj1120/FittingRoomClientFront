@@ -14,14 +14,19 @@ const useUtil = defineStore('useUtil', () => {
     return [year, month, day].join('-')
   }
 
+  const getThumbnailImageUrl = (path) => {
+    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
+    return `${domain}/image/thumbnail/${path}`
+  }
+
   const getImageUrl = (path) => {
-    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8088' : ':3258')
+    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
     return `${domain}/image/${path}`
   }
 
-  const getDefaultImageUrl = () => {
-    const path = 'd6db4352-620e-4cb9-ae73-a329e38783c1.jpg'
-    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8088' : ':3258')
+  const getDefaultRoomImageUrl = () => {
+    const path = 'e3d90340-265d-485c-9ed4-a7a864ddd006.jpg'
+    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':7070' : ':3256')
     return `${domain}/image/${path}`
   }
 
@@ -62,9 +67,7 @@ const useUtil = defineStore('useUtil', () => {
     return addressInfo.value
   }
 
-
-
-  return { convertDate, getImageUrl, getDefaultImageUrl, execDaumPostcode }
+  return { convertDate, getImageUrl, getThumbnailImageUrl, getDefaultRoomImageUrl, execDaumPostcode }
 })
 
 

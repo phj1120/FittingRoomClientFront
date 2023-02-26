@@ -21,6 +21,12 @@ const routes = [
         name: 'DressDetailPage',
         component: () => import('@/views/dress/DressDetailPage.vue'),
         props: true
+      },
+      {
+        path: 'product/:prNo',
+        name: 'DressProductPage',
+        component: () => import('@/views/dress/DressProductPage.vue'),
+        props: true
       }
     ]
   },
