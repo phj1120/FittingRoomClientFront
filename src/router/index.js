@@ -63,7 +63,7 @@ const routes = [
         component: () => import('@/views/my/MyOrderListPage.vue')
       },
       {
-        path: 'order/detail',
+        path: 'order/detail/:orNo',
         name: 'OrderDetailPage',
         component: () => import('@/views/my/MyOrderDetailPage.vue'),
         props:true
