@@ -6,7 +6,7 @@
           <v-row>
             <v-col cols="12" md="6">
               <v-carousel :cycle="true" interval="2000">
-                <v-carousel-item v-for="image in imageList.top" :key="image.prfUuid" :src="getProductImageUrl(image.prfUuid)" cover></v-carousel-item>
+                <v-carousel-item v-for="image in imageList.top" :key="image.prfUuid" :src="getImageUrl(image.prfUuid)" cover></v-carousel-item>
               </v-carousel>
             </v-col>
             <v-col cols="12" md="6">
@@ -45,7 +45,7 @@
     <v-col cols="12" xl="8">
       <v-row>
         <v-card class="bg-grey-lighten-3 ma-3" width="100vw">
-          <v-img :src="getProductImageUrl(imageList.bottom)"></v-img>
+          <v-img :src="getImageUrl(imageList.bottom)"></v-img>
         </v-card>
       </v-row>
     </v-col>
@@ -59,7 +59,7 @@
 
 
   const props = defineProps(['prNo'])
-  const { getProductImageUrl } = useUtil()
+  const { getImageUrl } = useUtil()
   const product = ref({})
   const imageList = ref({top: [], bottom: [{}]})
   const optionInfo = ref({items: [], selectValue: null})
