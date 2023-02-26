@@ -5,7 +5,7 @@
         <v-col v-for="(room, index) in roomList" :key="room.pmNo" cols="12" md="6">
           <v-card class="mx-auto bg-grey-lighten-3" link>
             <v-col cols="12" class="pa-0" @click="handleClickCard( room.pmNo )">
-              <v-img :src="room.roThumbnail != null ? getImageUrl( room.roThumbnail ) : getDefaultRoomImageUrl()" height="200px" cover></v-img>
+              <v-img :src="room.roThumbnail != null ? getThumbnailImageUrl( room.roThumbnail ) : getDefaultRoomImageUrl()" height="200px" cover></v-img>
               <v-card-title>{{ room.roName }}</v-card-title>
               <v-card-subtitle>{{ room.roAddress + ' ' + room.roDetailAddress }}</v-card-subtitle>
             </v-col>
@@ -42,7 +42,7 @@
 
 
   const emits = defineEmits(['handleClickRouter', 'handleClickDetail'])
-  const { getImageUrl, getDefaultRoomImageUrl } = useUtil()
+  const { getThumbnailImageUrl, getDefaultRoomImageUrl } = useUtil()
   const roomList = ref([])
   const pageInfo = ref({ page: null, lastPage: null })
 

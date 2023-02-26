@@ -14,6 +14,11 @@ const useUtil = defineStore('useUtil', () => {
     return [year, month, day].join('-')
   }
 
+  const getThumbnailImageUrl = (path) => {
+    const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
+    return `${domain}/image/thumbnail/${path}`
+  }
+
   const getImageUrl = (path) => {
     const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
     return `${domain}/image/${path}`
@@ -74,7 +79,7 @@ const useUtil = defineStore('useUtil', () => {
     listData.value = list
   }
 
-  return { convertDate, getImageUrl, getDefaultRoomImageUrl, execDaumPostcode,getReTime,reservationDetailData,listData }
+  return { convertDate, getImageUrl, getThumbnailImageUrl, getDefaultRoomImageUrl, execDaumPostcode,getReTime,reservationDetailData,listData }
 })
 
 

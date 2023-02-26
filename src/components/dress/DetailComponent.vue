@@ -16,7 +16,7 @@
                   <v-slide-group-item v-for="product in seller.productList" :key="product.prName" v-slot="{ selectedClass }">
                     <v-card color="grey-lighten-1" :class="['ma-3', selectedClass]" height="160" width="160" @click="handleClickCard(product.prNo)" link>
                       <div class="d-flex fill-height align-center justify-center">
-                        <img :src="getImageUrl(product.prfUuid)">
+                        <img :src="getThumbnailImageUrl(product.prfUuid)">
                       </div>
                     </v-card>
                   </v-slide-group-item>
@@ -39,7 +39,7 @@
 
   const props = defineProps(['pmNo'])
   const emits = defineEmits(['handleClickProduct'])
-  const { getImageUrl } = useUtil()
+  const { getThumbnailImageUrl } = useUtil()
   const sellerList = ref([])
 
 
