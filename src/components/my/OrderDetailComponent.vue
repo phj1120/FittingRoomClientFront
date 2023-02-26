@@ -53,34 +53,66 @@
           </tr>
           </tbody>
         </v-table>
+        <v-row justify="center">
+          <v-col  v-if="itemList.orStatus=='대기'" cols="1" class="mx-1">
+            <v-btn @click="reservationCheckBtn">예약확인</v-btn>
+          </v-col>
+          <v-col cols="1" class="mx-1">
+            <v-btn @click="reservationCancleBtn">예약취소</v-btn>
+          </v-col>
+          <v-col cols="1" class="mx-1">
+          <v-btn @click="emits('handleMoveList')">목록보기</v-btn>
+        </v-col>
+
+        </v-row>
       </v-card>
+
     </v-col>
+
   </v-row>
 
 </template>
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {getReservaiontDetailApi} from "@/apis/reservation/reservationApis";
+import {
+  getReservaiontDetailApi,
+  modifyReservationCancleApi,
+  modifyReservationCheckApi
+} from "@/apis/reservation/reservationApis";
 import {getReservationItemListApi} from "@/apis/cart/cartApis";
+import {it} from "vuetify/locale";
 
 const props = defineProps(['orNo'])
+const emits = defineEmits(['handleMoveList'])
 
 const itemList = ref({})
 const cartItemList = ref({})
-
+const noList = ref({caNo : 0,orNo :0 , reNo:0})
 const getReservationData = async ()=>{
   itemList.value = await getReservaiontDetailApi(props.orNo)
+  console.log(itemList.value.orStatus)
+  noList.value.caNo = itemList.value.caNo
+  noList.value.reNo = itemList.value.reNo
   await getItemList(itemList.value.caNo)
 
 }
 const getItemList = async (caNo) =>{
-  console.log(itemList.value.caNo)
   cartItemList.value = await getReservationItemListApi(caNo)
+}
 
+const reservationCheckBtn = async () =>{
+   await modifyReservationCheckApi(noList.value)
+  emits('handleMoveList')
+}
+const reservationCancleBtn = async () =>{
+  await modifyReservationCancleApi(noList.value)
+  emits('handleMoveList')
 }
 onMounted(()=>{
   getReservationData()
+  noList.value.orNo = props.orNo
+
 })
 </script>
 
