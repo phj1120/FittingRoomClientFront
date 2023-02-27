@@ -1,3 +1,4 @@
+import axios from "axios";
 import authAxios from "@/apis/common/authAxios";
 
 const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
@@ -5,8 +6,8 @@ const domain = 'http://' + window.location.hostname + ( window.location.hostname
 /**
  * 장바구니 목록 조회
  **/
-export const getCartList = async (coNo) => {
-  const res = await authAxios.get(`${domain}/api/consumer/cart/${coNo}`)
+export const getCartList = async () => {
+  const res = await authAxios.get(`${domain}/api/consumer/cart`)
   return res.data
 }
 
