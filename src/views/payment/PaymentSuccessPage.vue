@@ -1,14 +1,17 @@
 <template>
-  <BaseLayout :title="title">
-  </BaseLayout>
+  <v-progress-circular
+    :size="50"
+    color="brown"
+    indeterminate
+  ></v-progress-circular>
 </template>
 
 <script setup>
 import {useRoute} from "vue-router";
-import {onMounted, ref} from "vue";
+import {onMounted} from "vue";
 
 const route = useRoute();
-const title = ref('주문 완료')
+
 
 onMounted(() => {
   // 결제 아이디 저장
