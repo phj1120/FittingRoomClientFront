@@ -117,7 +117,6 @@ import {
 
 const props = defineProps(['caNo'])
 const emits = defineEmits(['moveOrderListPage'])
-
 const picked = ref({date: null, time: null})
 const customPosition = () => ({top: 0, left: 0})
 

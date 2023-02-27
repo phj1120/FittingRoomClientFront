@@ -5,8 +5,8 @@ const domain = 'http://' + window.location.hostname + ( window.location.hostname
 /**
  * 장바구니 목록 조회
  **/
-export const getCartList = async (coNo) => {
-  const res = await authAxios.get(`${domain}/api/consumer/cart/${coNo}`)
+export const getCartList = async () => {
+  const res = await authAxios.get(`${domain}/api/consumer/cart`)
   return res.data
 }
 
