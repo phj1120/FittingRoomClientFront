@@ -1,4 +1,3 @@
-import axios from "axios";
 import authAxios from "@/apis/common/authAxios";
 
 
