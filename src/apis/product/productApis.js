@@ -16,6 +16,7 @@ export const getProduct = async ( prNo ) => {
 
 export const getProductOption = async ( prNo ) => {
   const res = await authAxios.get(`${ domain }/api/product/option/${ prNo }`)
+
   return res.data
 }
 
