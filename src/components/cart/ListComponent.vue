@@ -71,7 +71,6 @@ onMounted(() => {
  **/
 const clickCart = (caNo) => {
   emits("handleMoveCart", caNo)
-
   return temp
 }
 
