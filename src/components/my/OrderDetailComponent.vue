@@ -57,7 +57,7 @@
           <v-col  v-if="itemList.orStatus=='대기'" cols="1" class="mx-1">
             <v-btn @click="reservationCheckBtn">예약확인</v-btn>
           </v-col>
-          <v-col cols="1" class="mx-1">
+          <v-col v-if="itemList.orStatus!=='예약취소'" cols="1" class="mx-1">
             <v-btn @click="reservationCancleBtn">예약취소</v-btn>
           </v-col>
           <v-col cols="1" class="mx-1">

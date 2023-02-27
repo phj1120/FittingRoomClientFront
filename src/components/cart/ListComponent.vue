@@ -62,7 +62,6 @@ let timer = null
 const getCartListData = async () => {
   const res = await getCartList();
   cartListInfo.value = res.data
-  console.log(cartListInfo.value)
 }
 
 onMounted(() => {
@@ -73,6 +72,7 @@ onMounted(() => {
  * 장바구니 상품 목록 페이지로 이동
  **/
 const clickCart = (caNo) => {
+  console.log(caNo)
   emits("handleMoveCart", caNo)
 
   return temp
