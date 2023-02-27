@@ -57,7 +57,7 @@ let timer = null
  * 장바구니 목록 조회
  **/
 const getCartListData = async () => {
-  const res = await getCartList(1); // coNo props 로 가져오기
+  const res = await getCartList();
   cartListInfo.value = res.data
   console.log(cartListInfo.value)
 }
