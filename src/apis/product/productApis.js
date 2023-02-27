@@ -16,5 +16,12 @@ export const getProduct = async ( prNo ) => {
 
 export const getProductOption = async ( prNo ) => {
   const res = await authAxios.get(`${ domain }/api/product/option/${ prNo }`)
+
+  return res.data
+}
+
+export const insertProductCart = async ( cartInfo ) => {
+  console.log(cartInfo)
+  const res = await authAxios.post(`${ domain }/api/product/cart`, cartInfo)
   return res.data
 }

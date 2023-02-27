@@ -5,8 +5,9 @@
         <v-card class="bg-grey-lighten-3 ma-3" width="100vw">
           <v-row>
             <v-col cols="12" md="6">
-              <v-carousel :cycle="true" interval="2000">
+              <v-carousel :cycle="true" :interval="2500">
                 <v-carousel-item v-for="image in imageList.top" :key="image.prfUuid" :src="getImageUrl(image.prfUuid)" cover></v-carousel-item>
+                <v-carousel-item :src="getImageUrl('fc75eb1f-4f28-4e07-a9fd-9d6bece24ceb.jpg')" cover></v-carousel-item>
               </v-carousel>
             </v-col>
             <v-col cols="12" md="6">
@@ -21,7 +22,7 @@
                 <v-select label="상품옵션" :items="optionInfo.items" v-model="optionInfo.selectValue" variant="outlined" @update:modelValue="handleSelectItem"></v-select>
 <!--                <v-btn @click="handleClickStock(-1)">추가</v-btn>-->
                 <v-list class="bg-grey-lighten-3 pb-0" height="12em">
-                  <v-list-item v-for="(cart, index) in cartList" :key="index">
+                  <v-list-item v-for="(cart, index) in cartList.spSize" :key="index">
                     <v-row class="ma-0">
                       <v-col cols="11" class="pa-0">
                         <h4>상품 : {{ product.prName }}</h4>
@@ -34,7 +35,7 @@
                   </v-list-item>
                 </v-list>
                 <v-divider class="my-4"></v-divider>
-                <v-btn color="success" class="w-100"><h2>장바구니 담기</h2></v-btn>
+                <v-btn color="success" class="w-100" @click="postComInsertProductCart"><h2>장바구니 담기</h2></v-btn>
               </v-card-text>
             </v-col>
           </v-row>
@@ -54,28 +55,31 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {getProduct, getProductOption} from "@/apis/product/productApis";
+  import {getProduct, getProductOption, insertProductCart} from "@/apis/product/productApis";
   import useUtil from "@/store/common/useUtil";
 
 
   const props = defineProps(['prNo'])
+  const emits = defineEmits(['handleClickCart'])
   const { getImageUrl } = useUtil()
   const product = ref({})
   const imageList = ref({top: [], bottom: [{}]})
-  const optionInfo = ref({items: [], selectValue: null})
-  const cartList = ref([])
+  const optionInfo = ref({items: [], selectValue: null, optionList: []})
+  const cartList = ref({spSize: [], spNo: []})
 
 
   const handleClickDel = ( index ) => {
-    cartList.value.splice(index, 1)
+    cartList.value.spSize.splice(index, 1)
+    cartList.value.spNo.splice(index, 1)
   }
 
   const handleSelectItem = () => {
-    if (cartList.value.find(ele => ele == optionInfo.value.selectValue)) {
+    if (cartList.value.spSize.find(ele => ele == optionInfo.value.selectValue)) {
       return
     }
 
-    cartList.value.push(optionInfo.value.selectValue)
+    optionInfo.value.optionList.forEach( ele => (ele.spSize == optionInfo.value.selectValue ? cartList.value.spNo.push(ele.spNo) : '' ))
+    cartList.value.spSize.push(optionInfo.value.selectValue)
   }
 
   const getComProduct = async () => {
@@ -88,7 +92,19 @@
 
   const getComProductOption = async () => {
     const data = await getProductOption( props.prNo )
+    optionInfo.value.optionList = data
     data.forEach(ele => optionInfo.value.items.push(ele.spSize))
+  }
+
+  const postComInsertProductCart = async () => {
+    if ( cartList.value.spNo.length == 0 ) {
+      return
+    }
+
+    product.value.spList = cartList.value.spNo
+    const data = await insertProductCart( product.value )
+
+    emits('handleClickCart')
   }
 
 
