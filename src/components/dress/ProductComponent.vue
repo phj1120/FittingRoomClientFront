@@ -60,6 +60,7 @@
 
 
   const props = defineProps(['prNo'])
+  const emits = defineEmits(['handleClickCart'])
   const { getImageUrl } = useUtil()
   const product = ref({})
   const imageList = ref({top: [], bottom: [{}]})
@@ -102,6 +103,8 @@
 
     product.value.spList = cartList.value.spNo
     const data = await insertProductCart( product.value )
+
+    emits('handleClickCart')
   }
 
 
