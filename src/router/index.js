@@ -21,6 +21,12 @@ const routes = [
         name: 'DressDetailPage',
         component: () => import('@/views/dress/DressDetailPage.vue'),
         props: true
+      },
+      {
+        path: 'product/:prNo',
+        name: 'DressProductPage',
+        component: () => import('@/views/dress/DressProductPage.vue'),
+        props: true
       }
     ]
   },
@@ -84,7 +90,7 @@ const routes = [
         component: () => import('@/views/my/MyOrderListPage.vue')
       },
       {
-        path: 'order/detail',
+        path: 'order/detail/:orNo',
         name: 'OrderDetailPage',
         component: () => import('@/views/my/MyOrderDetailPage.vue'),
         props:true

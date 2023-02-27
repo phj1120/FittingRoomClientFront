@@ -3,6 +3,14 @@
     <v-app-bar class="bg-brown-lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ props.title }}</v-toolbar-title>
+      <v-toolbar-items>
+        <v-btn v-if="!isLogin()" :to="{name:'LoginPage'}">
+          <v-icon icon="mdi-account-arrow-left" ></v-icon>
+        </v-btn>
+        <v-btn v-else @click="logout">
+          <v-icon icon="mdi-account-arrow-right"></v-icon>
+        </v-btn>
+      </v-toolbar-items>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" temporary>
@@ -30,15 +38,23 @@
 
 <script setup>
   import {ref} from "vue";
+  import useLogin from "@/store/common/useLogin";
 
+  const {isLogin, logout} = useLogin();
   const props = defineProps(['title'])
   let drawer = ref(false)
 </script>
 
 <style scoped>
   @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+
 
   * {
     font-family: 'Noto Sans KR';
+    /*font-family: 'Nanum Pen Script';*/
+    /*font-family: 'Nanum Gothic', sans-serif;*/
+
   }
 </style>

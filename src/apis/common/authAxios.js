@@ -5,7 +5,7 @@ import router from "@/router";
 // 요청과 토큰 refresh 한 번에 처리
 const authAxios = axios.create()
 
-const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3256')
+const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
 
 const requestRefresh = async () => {
   console.log("[RequestRefresh Start]")
@@ -54,11 +54,12 @@ authAxios.interceptors.response.use((response) => {
         console.log('authAxios.interceptors: Refresh Error')
         console.log(eee)
 
-        router.push({name: 'LoginPagePre'})
+        router.push({name: 'LoginPage'})
 
         return Promise.reject(eee);
       }
     }
+    router.push({name: 'LoginPage'})
 
     return Promise.reject(error);
   }

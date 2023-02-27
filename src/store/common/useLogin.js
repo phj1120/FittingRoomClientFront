@@ -2,8 +2,8 @@ import {defineStore} from "pinia";
 import {ref} from "vue";
 import VueCookies from "vue-cookies";
 
-const useLogin = defineStore('useLogin',() => {
-  const memberInfo = ref({access:null, refresh:null})
+const useLogin = defineStore('useLogin', () => {
+  const memberInfo = ref({access: null, refresh: null})
 
   const saveInfo = (result) => {
     console.log(`[useLogin.saveInfo]`)
@@ -23,7 +23,7 @@ const useLogin = defineStore('useLogin',() => {
     return memberInfo
   }
 
-  const logout = () =>{
+  const logout = () => {
     memberInfo.value.access = null
     memberInfo.value.refresh = null
 
@@ -31,7 +31,17 @@ const useLogin = defineStore('useLogin',() => {
     VueCookies.remove("refresh")
   }
 
-  return {memberInfo, saveInfo, getTokens, logout}
+  const isLogin = () => {
+    if (memberInfo.value.access !== null && memberInfo.value.refresh !== null)
+      return true
+
+    if (VueCookies.get('access') !== null && VueCookies.get('refresh') !== null)
+      return true;
+
+    return false
+  }
+
+  return {memberInfo, saveInfo, getTokens, logout, isLogin}
 })
 
 
