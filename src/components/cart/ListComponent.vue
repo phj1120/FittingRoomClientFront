@@ -5,7 +5,7 @@
               @touchend="touchEnd">
         <v-col cols="5">
           <v-img
-            src="https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20221207_10%2F1670354068993rrJWH_JPEG%2F71489964713358477_868293088.jpg&type=a340"/>
+            :src="getThumbnailImageUrl(cart.rfUuid)"/>
         </v-col>
         <v-col cols="7" class="ma-auto">
           <v-card-title>{{ cart.roName }}</v-card-title>
@@ -41,8 +41,11 @@ import {onMounted, ref} from "vue";
 import {deleteCart, getCartList} from "@/apis/cart/cartApis";
 import {comma} from "../../utils/util";
 import DialogsComponent from "@/components/common/DialogsComponent.vue";
+import useUtil from "@/store/common/useUtil";
 
 const emits = defineEmits(['handleMoveCart', 'handleRefreshKey'])
+const {getThumbnailImageUrl} = useUtil()
+
 const cartListInfo = ref([{
   caNo: null,
   roName: null,
