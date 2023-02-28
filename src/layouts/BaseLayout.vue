@@ -4,7 +4,12 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ props.title }}</v-toolbar-title>
       <v-toolbar-items>
-        <v-icon icon="mdi-vuetify"></v-icon>
+        <v-btn v-if="!isLogin()" :to="{name:'LoginPage'}">
+          <v-icon icon="mdi-account-arrow-left" ></v-icon>
+        </v-btn>
+        <v-btn v-else @click="logout">
+          <v-icon icon="mdi-account-arrow-right"></v-icon>
+        </v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -18,7 +23,7 @@
           </template>
           <v-list-item :to="{ name: 'OrderListPage' }" value="주문내역" title="주문내역" link></v-list-item>
           <v-list-item :to="{ name: 'MyProfilePage' }" value="회원정보" title="회원정보" link></v-list-item>
-          <v-list-item :to="{ name: 'QnAListPage' }" value="Q&A" title="Q&A" link></v-list-item>
+          <v-list-item :to="{ name: 'InquiryListPage' }" value="Q&A" title="Q&A" link></v-list-item>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
@@ -33,10 +38,11 @@
 
 <script setup>
   import {ref} from "vue";
+  import useLogin from "@/store/common/useLogin";
 
-
+  const {isLogin, logout} = useLogin();
   const props = defineProps(['title'])
-  const drawer = ref(false)
+  let drawer = ref(false)
 </script>
 
 <style scoped>

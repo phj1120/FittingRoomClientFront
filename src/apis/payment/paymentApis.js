@@ -1,7 +1,8 @@
 import axios from "axios";
 import authAxios from "@/apis/common/authAxios";
+import {convertLocalDate} from "@/utils/util";
 
-const domain = 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
+const domain = 'http://' + window.location.hostname + (window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
 
 export const requestPaymentReady = async (paymentReadyDTO) => {
   const paymentDTO = paymentReadyDTO.value
@@ -65,7 +66,9 @@ export const getPaymentDetail = async (caNo) => {
 
 export const getAbleReservationTime = async (roNo, reservationDt) => {
   const res = await authAxios.get(`${domain}/api/payment/ableReservation`, {
-    roNo: roNo, reservationDt: reservationDt
+    params: {
+      roNo: roNo, reservationDt: convertLocalDate(reservationDt)
+    }
   })
 
   console.log('[paymentApis.getAbleReservationTime]')

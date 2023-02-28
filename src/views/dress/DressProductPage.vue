@@ -1,6 +1,6 @@
 <template>
   <BaseLayout :title="title">
-    <ProductComponent :prNo="props.prNo"></ProductComponent>
+    <ProductComponent :prNo="props.prNo" @handleClickCart="handleClickCart"></ProductComponent>
   </BaseLayout>
 </template>
 
@@ -17,5 +17,7 @@
   const title = ref('입어볼래?')
 
 
-
+  const handleClickCart = () => {
+    router.push({ name: 'CartPage' })
+  }
 </script>
