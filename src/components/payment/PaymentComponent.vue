@@ -194,7 +194,8 @@ const paymentReadyDTO = ref({
   cid: 'TC0ONETIME',
   quantity: 1,
   tax_free_amount: 0,
-  approval_url: 'http://localhost:3000/payment/success',
+  // 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
+  approval_url: 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':3000' : ':3500') + '/payment/success',
   cancel_url: 'http://localhost:3000/payment/cancel',
   fail_url: 'http://localhost:3000/payment/fail'
 })
