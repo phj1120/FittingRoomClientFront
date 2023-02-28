@@ -3,15 +3,16 @@
     <v-col cols="12" md="6" v-for="cart in cartListInfo" :key="cart.caNo">
       <v-card class="d-flex border-xl" @click="clickCart(cart.caNo)" @touchstart="touchStart(cart.caNo)"
               @touchend="touchEnd">
-        <v-col cols="5">
-          <v-img
-            src="https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20221207_10%2F1670354068993rrJWH_JPEG%2F71489964713358477_868293088.jpg&type=a340"/>
-        </v-col>
-        <v-col cols="7" class="ma-auto">
-          <v-card-title>{{ cart.roName }}</v-card-title>
-          <v-card-text>{{ cart.countProduct }}개의 상품이 기다립니다.</v-card-text>
-          <v-card-text>총 {{ comma(cart.totalPrice) }}원</v-card-text>
-        </v-col>
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-img class="w-100 h-100" :src="getThumbnailImageUrl(cart.rfUuid)"/>
+          </v-col>
+          <v-col cols="12" md="6" class="ma-auto">
+            <v-card-title>{{ cart.roName }}</v-card-title>
+            <v-card-text>{{ cart.countProduct }}개의 상품이 기다립니다.</v-card-text>
+            <v-card-text>총 {{ comma(cart.totalPrice) }}원</v-card-text>
+          </v-col>
+        </v-row>
       </v-card>
       <div :key="longTouchDialog" class="d-flex">
         <DialogsComponent :dialog="longTouchDialog">
@@ -41,14 +42,12 @@ import {onMounted, ref} from "vue";
 import {deleteCart, getCartList} from "@/apis/cart/cartApis";
 import {comma} from "../../utils/util";
 import DialogsComponent from "@/components/common/DialogsComponent.vue";
+import useUtil from "@/store/common/useUtil";
 
 const emits = defineEmits(['handleMoveCart', 'handleRefreshKey'])
-const cartListInfo = ref([{
-  caNo: null,
-  roName: null,
-  countProduct: null,
-  totalPrice: null
-}])
+const {getThumbnailImageUrl} = useUtil()
+
+const cartListInfo = ref({})
 const longTouchDialog = ref(false)
 const temp = ref()
 let timer = null
@@ -59,7 +58,6 @@ let timer = null
 const getCartListData = async () => {
   const res = await getCartList();
   cartListInfo.value = res.data
-  console.log(cartListInfo.value)
 }
 
 onMounted(() => {
@@ -70,8 +68,8 @@ onMounted(() => {
  * 장바구니 상품 목록 페이지로 이동
  **/
 const clickCart = (caNo) => {
+  console.log(caNo)
   emits("handleMoveCart", caNo)
-
   return temp
 }
 
