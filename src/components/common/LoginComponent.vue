@@ -42,7 +42,7 @@ const handleClickLogin = async () => {
 
 const loginWithKakao = () => {
   Kakao.Auth.authorize({
-    redirectUri: 'http://localhost:3000/register',
+    redirectUri: 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':3000' : ':3500') + '/register',
   });
 }
 </script>
