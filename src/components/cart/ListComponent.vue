@@ -60,15 +60,10 @@ const getCartListData = async () => {
   cartListInfo.value = res.data
 }
 
-onMounted(() => {
-  getCartListData()
-})
-
 /**
  * 장바구니 상품 목록 페이지로 이동
  **/
 const clickCart = (caNo) => {
-  console.log(caNo)
   emits("handleMoveCart", caNo)
   return temp
 }
@@ -81,7 +76,6 @@ const touchStart = (caNo) => {
   timer = setTimeout(() => {
     if (!longTouchDialog.value) {
       longTouchDialog.value = true
-      console.log(longTouchDialog.value)
     }
   }, 1000);
 }
@@ -97,7 +91,6 @@ const touchEnd = () => {
  * 장바구니 삭제
  **/
 const clickDelete = async () => {
-  console.log(temp.value)
   await deleteCart(temp.value)
   longTouchDialog.value = false
   emits('handleRefreshKey')
@@ -110,6 +103,10 @@ const clickCancel = () => {
   longTouchDialog.value = false
 }
 
+
+onMounted(() => {
+  getCartListData()
+})
 </script>
 
 <style scoped>

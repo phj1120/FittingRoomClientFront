@@ -11,7 +11,6 @@
   import ProductComponent from "@/components/dress/ProductComponent.vue";
 
 
-  const route = useRoute()
   const router = useRouter()
   const props = defineProps(['prNo'])
   const title = ref('입어볼래?')

@@ -35,7 +35,7 @@
                   </v-list-item>
                 </v-list>
                 <v-divider class="my-4"></v-divider>
-                <v-btn color="success" class="w-100" @click="postComInsertProductCart"><h2>장바구니 담기</h2></v-btn>
+                <v-btn color="success" class="w-100" @click="handleClickCart"><h2>장바구니 담기</h2></v-btn>
               </v-card-text>
             </v-col>
           </v-row>
@@ -96,15 +96,18 @@
     data.forEach(ele => optionInfo.value.items.push(ele.spSize))
   }
 
-  const postComInsertProductCart = async () => {
+  const handleClickCart = () => {
     if ( cartList.value.spNo.length == 0 ) {
       return
     }
 
-    product.value.spList = cartList.value.spNo
-    const data = await insertProductCart( product.value )
-
+    postComInsertProductCart()
     emits('handleClickCart')
+  }
+
+  const postComInsertProductCart = async () => {
+    product.value.spList = cartList.value.spNo
+    await insertProductCart( product.value )
   }
 
 
