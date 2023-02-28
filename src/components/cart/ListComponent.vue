@@ -3,15 +3,16 @@
     <v-col cols="12" md="6" v-for="cart in cartListInfo" :key="cart.caNo">
       <v-card class="d-flex border-xl" @click="clickCart(cart.caNo)" @touchstart="touchStart(cart.caNo)"
               @touchend="touchEnd">
-        <v-col cols="5">
-          <v-img
-            :src="getThumbnailImageUrl(cart.rfUuid)"/>
-        </v-col>
-        <v-col cols="7" class="ma-auto">
-          <v-card-title>{{ cart.roName }}</v-card-title>
-          <v-card-text>{{ cart.countProduct }}개의 상품이 기다립니다.</v-card-text>
-          <v-card-text>총 {{ comma(cart.totalPrice) }}원</v-card-text>
-        </v-col>
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-img class="w-100 h-100" :src="getThumbnailImageUrl(cart.rfUuid)"/>
+          </v-col>
+          <v-col cols="12" md="6" class="ma-auto">
+            <v-card-title>{{ cart.roName }}</v-card-title>
+            <v-card-text>{{ cart.countProduct }}개의 상품이 기다립니다.</v-card-text>
+            <v-card-text>총 {{ comma(cart.totalPrice) }}원</v-card-text>
+          </v-col>
+        </v-row>
       </v-card>
       <div :key="longTouchDialog" class="d-flex">
         <DialogsComponent :dialog="longTouchDialog">
@@ -46,12 +47,7 @@ import useUtil from "@/store/common/useUtil";
 const emits = defineEmits(['handleMoveCart', 'handleRefreshKey'])
 const {getThumbnailImageUrl} = useUtil()
 
-const cartListInfo = ref([{
-  caNo: null,
-  roName: null,
-  countProduct: null,
-  totalPrice: null
-}])
+const cartListInfo = ref({})
 const longTouchDialog = ref(false)
 const temp = ref()
 let timer = null

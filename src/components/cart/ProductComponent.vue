@@ -11,23 +11,20 @@
             <p class="mt-4">상품 삭제</p>
           </div>
         </v-col>
-        <v-col cols="5" class="ma-auto">
-          <v-img max-height="230" max-width="230" :src="getImageUrl(product.thumbnail)"/>
-        </v-col>
-        <v-col cols="7" class="d-flex">
-          <div class="mt-5 mb-5">
-            <v-card-text class="font-weight-bold">상품명:</v-card-text>
-            <v-card-text class="font-weight-bold">브랜드:</v-card-text>
-            <v-card-text class="font-weight-bold">사이즈:</v-card-text>
-            <v-card-text class="font-weight-bold">가격:</v-card-text>
-          </div>
-          <div class="mt-5 mb-5">
-            <v-card-text>{{ product.prName }}</v-card-text>
-            <v-card-text>{{ product.prBrand }}</v-card-text>
-            <v-card-text>{{ product.spSize }}</v-card-text>
-            <v-card-text>{{ comma(product.prPrice) }}원</v-card-text>
-          </div>
-        </v-col>
+        <v-row>
+          <v-col cols="12" md="6" class="ma-auto">
+            <v-img class="w-100" :src="getThumbnailImageUrl(product.thumbnail)"/>
+          </v-col>
+          <v-col cols="12" md="6" class="pt-10 pl-8">
+            <h5 class="mt-2">상품명 : {{ product.prName }}</h5>
+            <h5 class="mt-2">브랜드 : {{ product.prBrand }}</h5>
+            <h5 class="mt-2">사이즈 : {{ product.spSize }}</h5>
+            <br>
+            <br>
+            <br>
+            <h3 class="mt-2">가격: {{ product.prPrice }} 원</h3>
+          </v-col>
+        </v-row>
       </v-card>
     </v-col>
   </v-row>
@@ -37,18 +34,13 @@
 import {onMounted, ref} from "vue";
 import {deleteCartProduct, getCartProducts} from "@/apis/cart/cartApis";
 import {comma, getImageUrl} from "@/utils/util";
+import useUtil from "@/store/common/useUtil";
 
+
+const { getThumbnailImageUrl } = useUtil()
 const props = defineProps(['caNo'])
 const emits = defineEmits(['handleRefreshKey', 'handleMoveDetail'])
-const productsInfo = ref([{
-  cpNo: null,
-  prNo: null,
-  thumbnail: null,
-  prName: null,
-  prBrand: null,
-  spSize: null,
-  prPrice: null
-}])
+const productsInfo = ref({})
 const hiddenDiv = ref(false)
 const temp = ref()
 
