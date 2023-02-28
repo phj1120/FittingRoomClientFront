@@ -31,7 +31,7 @@ const handleMoveCart = (caNo) => {
  * 하단 바 클릭 이벤트
  **/
 const handleBottomNav = () => {
-  console.log("상품 구경하기")
+  router.push({name: 'DressListPage'})
 }
 
 /**
