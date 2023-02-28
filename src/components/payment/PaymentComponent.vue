@@ -1,108 +1,71 @@
 <template>
-  <v-row>
-    <v-col cols="12">
-      <v-card>
-        <v-col cols="12">
-          <v-row>
-            <v-col>
-              {{ userInfo.coName }}
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              {{ userInfo.coEmail }}
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              {{ userInfo.coPhone }}
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-card>
-    </v-col>
-  </v-row>
+  <v-card>
+    <v-row>
+      <v-col>
+        <v-card-title>{{ userInfo.coName }}</v-card-title>
+        <v-card-item>{{ userInfo.coEmail }}</v-card-item>
+        <v-card-item>{{ userInfo.coPhone }}</v-card-item>
+      </v-col>
+    </v-row>
 
-  <v-row>
-    <v-col cols="12">
-      <v-card>
-        <v-col cols="12">
-          <v-row>
-            <v-col>
-              {{ roomInfo.roName }}
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              {{ roomInfo.roAddress }}
-              {{ roomInfo.roDetailAddress }}
-              {{ picked }}
-            </v-col>
-          </v-row>
+    <v-divider/>
 
-          <v-row>
-            <v-col cols="6">
-              <VueDatePicker
-                teleport-center
-                :alt-position="customPosition"
-                v-model="picked.date" format="yyyy-MM-dd"
-                auto-apply/>
+    <v-row>
+      <v-col>
+        <v-card-title>{{ roomInfo.roName }}</v-card-title>
+        <v-card-item>{{ roomInfo.roAddress }} {{ roomInfo.roDetailAddress }}</v-card-item>
+      </v-col>
+    </v-row>
 
-            </v-col>
-            <v-col cols="6">
-              <v-select
-                v-model="picked.time"
-                label="Select"
-                :items="ableReservation"
-                item-title="title"
-                item-value="code"
-              ></v-select>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-card>
-    </v-col>
-  </v-row>
+    <v-divider/>
 
-  <v-row>
-    <v-col cols="12">
-      <v-card>
-        <v-col cols="12">
-          <v-row v-for="productInfo in productInfos" :key="productInfo.caNo">
-            {{ productInfo }}
-            <v-row>
-              <v-col>
-                {{ productInfo.prName }}
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                {{ productInfo.coEmail }}
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                {{ productInfo.coPhone }}
-              </v-col>
-            </v-row>
-          </v-row>
-        </v-col>
-      </v-card>
-    </v-col>
-  </v-row>
-
-  <v-row>
-    <v-col>
-      <v-card>
+    <v-row>
+      <v-col>
+        <v-card-title>예약 일시</v-card-title>
         <v-row>
-          <v-col cols="12">
-            <v-btn @click="handleClickPaymentButton">{{ payAmount }} 원 결제하기</v-btn>
+          <v-col cols="6">
+            <VueDatePicker
+              v-model="picked.date"
+              format="yyyy-MM-dd"
+              auto-apply/>
+          </v-col>
+          <v-col cols="6">
+            <v-select
+              v-model="picked.time"
+              label="예약 일시"
+              :items="ableReservation"
+              item-title="title"
+              item-value="code"
+            ></v-select>
           </v-col>
         </v-row>
-      </v-card>
-    </v-col>
-  </v-row>
+      </v-col>
+    </v-row>
+
+    <v-divider/>
+
+    <v-row>
+      <v-col cols="12">
+        <v-card v-for="productInfo in productInfos" :key="productInfo.caNo">
+          <v-row justify="center">
+            <v-col cols="4" class="align-self-center">
+              <v-img :src="getThumbnailImageUrl(productInfo.thumbnail)"></v-img>
+            </v-col>
+            <v-col cols="8">
+              <v-card-text class="mt-0 mb-0">{{ productInfo.prName }}</v-card-text>
+              <v-card-text class="mt-0 mb-0">{{ productInfo.prBrand }}</v-card-text>
+              <v-card-text class="mt-0 mb-0">{{ productInfo.spSize }}</v-card-text>
+              <v-card-text class="mt-0 mb-0">{{ productInfo.prPrice }} 원</v-card-text>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-card>
+  <BottomLayout :bottom="bottom" @handleBottomNav="handleClickPaymentButton"></BottomLayout>
+
 </template>
+
 
 <script setup>
 import VueDatePicker from '@vuepic/vue-datepicker';
@@ -114,11 +77,16 @@ import {
   requestPaymentApprove,
   requestPaymentReady
 } from "@/apis/payment/paymentApis";
+import useUtil from "@/store/common/useUtil";
+import BottomLayout from "@/layouts/BottomLayout.vue";
+
+const {getThumbnailImageUrl} = useUtil()
 
 const props = defineProps(['caNo'])
 const emits = defineEmits(['moveOrderListPage'])
+
+const bottom = ref('장소 예약 하기')
 const picked = ref({date: null, time: null})
-const customPosition = () => ({top: 0, left: 0})
 
 // 전체 타임
 const reservationTime = ref([
@@ -195,7 +163,7 @@ const paymentReadyDTO = ref({
   quantity: 1,
   tax_free_amount: 0,
   // 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':8080' : ':3258')
-  approval_url: 'http://' + window.location.hostname + ( window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':3000' : ':3500') + '/payment/success',
+  approval_url: 'http://' + window.location.hostname + (window.location.hostname.indexOf('armysseung.iptime.org') == -1 ? ':3000' : ':3500') + '/payment/success',
   cancel_url: 'http://localhost:3000/payment/cancel',
   fail_url: 'http://localhost:3000/payment/fail'
 })
@@ -241,6 +209,7 @@ const getPaymentInfo = async () => {
   })
 
   payAmount.value = res.data.payAmount
+  bottom.value = payAmount.value + '원 결제 하기'
 }
 
 // 결제 하기 버튼
