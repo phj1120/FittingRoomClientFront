@@ -1,6 +1,6 @@
 <template>
   <BaseLayout :title="title">
-    <ProductComponent :caNo="caNo" :key="refreshKey" @handleRefreshKey="handleRefreshKey"></ProductComponent>
+    <ProductComponent :caNo="caNo" :key="refreshKey" @handleRefreshKey="handleRefreshKey" @handleMoveDetail="handleMoveDetail"></ProductComponent>
     <BottomLayout :bottom="bottom" @handleBottomNav="handleBottomNav"></BottomLayout>
   </BaseLayout>
 </template>
@@ -26,6 +26,13 @@ const handleBottomNav = () => {
   console.log(caNo)
   console.log("상품 입어보기")
   router.push({name: 'PaymentPage', query: {cano: caNo}})
+}
+
+/**
+ * 상세 페이지로 이동
+ **/
+const handleMoveDetail = (prNo) => {
+  router.push({name: 'DressProductPage', params: {prNo: prNo}})
 }
 
 /**

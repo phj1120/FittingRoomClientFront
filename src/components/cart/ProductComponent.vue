@@ -39,7 +39,7 @@ import {deleteCartProduct, getCartProducts} from "@/apis/cart/cartApis";
 import {comma, getImageUrl} from "@/utils/util";
 
 const props = defineProps(['caNo'])
-const emits = defineEmits(['handleRefreshKey'])
+const emits = defineEmits(['handleRefreshKey', 'handleMoveDetail'])
 const productsInfo = ref([{
   cpNo: null,
   prNo: null,
@@ -81,6 +81,7 @@ const clickProduct = (cpNo) => {
  **/
 const clickMoveDetail = (prNo) => {
   console.log(prNo)
+  emits('handleMoveDetail', prNo)
 }
 
 /**
