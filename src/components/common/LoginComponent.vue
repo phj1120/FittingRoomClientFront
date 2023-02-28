@@ -12,12 +12,10 @@
     </v-row>
     <v-row justify="center" align="start">
       <v-col cols="4">
-        <v-btn class="mb-4 bg-brown-lighten-1" width="100%"
-               @click="handleClickLogin">로그인</v-btn>
+        <v-btn class="mb-4 bg-brown-lighten-1 w-100" @click="handleClickLogin">로그인</v-btn>
       </v-col>
       <v-col cols="4">
-        <v-img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-               @click="loginWithKakao"/>
+        <v-btn class="mb-4 bg-yellow text-brown-darken-2 font-weight-bold w-100" @click="loginWithKakao">카카오 로그인</v-btn>
       </v-col>
     </v-row>
   </v-container>
