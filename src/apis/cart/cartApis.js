@@ -28,7 +28,7 @@ export const getCartProducts = async (caNo) => {
 
 
 export const getReservationItemListApi = async (caNo) => {
-  const res = await authAxios.get(`${domain}/api/reservation/detail/products/${caNo}`)
+  const res = await authAxios.get(`${domain}/api/consumer/cart/detail/${caNo}`)
   return res.data
 }
 
