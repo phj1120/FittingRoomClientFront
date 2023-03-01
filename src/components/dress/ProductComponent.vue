@@ -19,8 +19,7 @@
                 <v-divider class="my-4"></v-divider>
                 <h4>기본가 : {{ comma(product.prPrice) }} 원</h4>
                 <br>
-                <v-select label="상품옵션" :items="optionInfo.items" v-model="optionInfo.selectValue" variant="outlined" @update:modelValue="handleSelectItem"></v-select>
-<!--                <v-btn @click="handleClickStock(-1)">추가</v-btn>-->
+                <v-select label="상품옵션" :items="optionInfo.items" v-model="optionInfo.selectValue" variant="outlined"></v-select>
                 <v-list class="bg-grey-lighten-3 pb-0" height="12em">
                   <v-list-item v-for="(cart, index) in cartList.spSize" :key="index">
                     <v-row class="ma-0">
@@ -35,7 +34,7 @@
                   </v-list-item>
                 </v-list>
                 <v-divider class="my-4"></v-divider>
-                <v-btn color="success" class="w-100" @click="handleClickCart"><h2>장바구니 담기</h2></v-btn>
+                <v-btn color="success" class="w-100" @click="handleComClickCart"><h2>장바구니 담기</h2></v-btn>
               </v-card-text>
             </v-col>
           </v-row>
@@ -54,7 +53,7 @@
 </template>
 
 <script setup>
-  import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
   import {getProduct, getProductOption, insertProductCart} from "@/apis/product/productApis";
   import useUtil from "@/store/common/useUtil";
   import {comma} from "../../utils/util";
@@ -97,7 +96,7 @@
     data.forEach(ele => optionInfo.value.items.push(ele.spSize))
   }
 
-  const handleClickCart = () => {
+  const handleComClickCart = () => {
     if ( cartList.value.spNo.length == 0 ) {
       return
     }
@@ -111,6 +110,10 @@
     await insertProductCart( product.value )
   }
 
+
+  watch(() => optionInfo.value.selectValue, (value, oldValue) => {
+    handleSelectItem()
+  })
 
   onMounted(() => {
     getComProduct()
