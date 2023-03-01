@@ -17,7 +17,7 @@
                 <br>
                 <h5>카테고리 : {{ product.prcPathName || '입어볼래 대표상품' }} / 브랜드 : {{ product.prBrand }}</h5>
                 <v-divider class="my-4"></v-divider>
-                <h4>기본가 : {{ product.prPrice }} 원</h4>
+                <h4>기본가 : {{ comma(product.prPrice) }} 원</h4>
                 <br>
                 <v-select label="상품옵션" :items="optionInfo.items" v-model="optionInfo.selectValue" variant="outlined" @update:modelValue="handleSelectItem"></v-select>
 <!--                <v-btn @click="handleClickStock(-1)">추가</v-btn>-->
@@ -57,6 +57,7 @@
   import {onMounted, ref} from "vue";
   import {getProduct, getProductOption, insertProductCart} from "@/apis/product/productApis";
   import useUtil from "@/store/common/useUtil";
+  import {comma} from "../../utils/util";
 
 
   const props = defineProps(['prNo'])

@@ -22,7 +22,7 @@
             <br>
             <br>
             <br>
-            <h3 class="mt-2">가격: {{ product.prPrice }} 원</h3>
+            <h3 class="mt-2 mb-10">가격: {{ comma(product.prPrice) }} 원</h3>
           </v-col>
         </v-row>
       </v-card>
@@ -33,7 +33,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {deleteCartProduct, getCartProducts} from "@/apis/cart/cartApis";
-import {comma, getImageUrl} from "@/utils/util";
+import {comma} from "@/utils/util";
 import useUtil from "@/store/common/useUtil";
 
 

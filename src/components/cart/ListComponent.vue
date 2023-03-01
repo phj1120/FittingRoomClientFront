@@ -1,16 +1,20 @@
 <template>
   <v-row>
     <v-col cols="12" md="6" v-for="cart in cartListInfo" :key="cart.caNo">
-      <v-card class="d-flex border-xl" @click="clickCart(cart.caNo)" @touchstart="touchStart(cart.caNo)"
-              @touchend="touchEnd">
+      <v-card class="border-xl" width="100%" @click="clickCart(cart.caNo)" @touchstart="touchStart(cart.caNo)" @touchend="touchEnd">
         <v-row>
           <v-col cols="12" md="6">
-            <v-img class="w-100 h-100" :src="getThumbnailImageUrl(cart.rfUuid)"/>
+            <v-img :src="getThumbnailImageUrl(cart.rfUuid)" style="width: 100%; height: 15em" cover/>
           </v-col>
-          <v-col cols="12" md="6" class="ma-auto">
-            <v-card-title>{{ cart.roName }}</v-card-title>
-            <v-card-text>{{ cart.countProduct }}개의 상품이 기다립니다.</v-card-text>
-            <v-card-text>총 {{ comma(cart.totalPrice) }}원</v-card-text>
+          <v-col cols="12" md="6" class="pa-0">
+            <br>
+            <br>
+            <h3 class="pl-8">지점명 : {{ cart.roName }}</h3>
+            <br>
+            <br>
+            <br>
+            <h5 class="pl-8">총 {{ cart.countProduct }} 개의 상품이 기다립니다.</h5>
+            <h3 class="pl-8 mb-10">총 {{ comma(cart.totalPrice) }} 원</h3>
           </v-col>
         </v-row>
       </v-card>
