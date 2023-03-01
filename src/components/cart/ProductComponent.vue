@@ -2,7 +2,7 @@
   <v-row>
     <v-col cols="12" md="6" v-for="product in productsInfo" :key="product.cpNo">
       <v-card class="d-flex border-xl" @click="clickProduct(product.cpNo)">
-        <v-col cols="12" class="position-absolute h-100 text-center pa-0 d-flex" style="z-index: 1"
+        <v-col cols="12" class="position-absolute h-100 text-center pa-0 d-flex" style="z-index: 1; top: 89%"
                v-if="hiddenDiv && product.cpNo == temp">
           <div class="bg-white w-100 h-25 border-xl font-weight-bold" @click="clickMoveDetail(product.prNo)">
             <p class="mt-4">상품 상세</p>
@@ -16,7 +16,7 @@
             <v-img class="w-100" :src="getThumbnailImageUrl(product.thumbnail)"/>
           </v-col>
           <v-col cols="12" md="6" class="pt-10 pl-8">
-            <h5 class="mt-2">상품명 : {{ product.prName }}</h5>
+            <h5>상품명 : {{ product.prName }}</h5>
             <h5 class="mt-2">브랜드 : {{ product.prBrand }}</h5>
             <h5 class="mt-2">사이즈 : {{ product.spSize }}</h5>
             <br>
