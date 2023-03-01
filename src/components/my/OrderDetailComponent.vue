@@ -18,10 +18,10 @@
               <h5 class="text-grey-darken-1 mb-2">예약 시간</h5>
               <v-select v-model="picked.time" :items="ableReservation" item-title="title" item-value="code" :readonly="!modifyDate" variant="outlined"></v-select>
             </v-col>
-            <v-col cols="12" class="pt-0">
-              <v-btn v-if="itemList.orStatus!=='예약취소' && !modifyDate" class="w-100" color="success" @click="modifyBtn">일정 수정하기</v-btn>
-              <v-btn v-if="itemList.orStatus!=='예약취소' && modifyDate" class="w-100" color="success" @click="modifyRedt">변경 저장</v-btn>
-              <v-btn v-if="itemList.orStatus!=='예약취소' && modifyDate" class="w-100" color="success" @click="modifyBtn">취소</v-btn>
+            <v-col cols="12" class="pt-0 pb-5">
+              <v-btn v-if="itemList.orStatus!=='예약취소' && !modifyDate" class="w-100 mt-2" color="success" @click="modifyBtn">일정 수정하기</v-btn>
+              <v-btn v-if="itemList.orStatus!=='예약취소' && modifyDate" class="w-100 mt-2" color="primary" @click="modifyRedt">변경 저장</v-btn>
+              <v-btn v-if="itemList.orStatus!=='예약취소' && modifyDate" class="w-100 mt-3" color="error" @click="modifyCancleBtn">취소</v-btn>
             </v-col>
           </v-col>
         </v-row>
@@ -84,7 +84,7 @@
 
 
   const props = defineProps(['orNo'])
-  const emits = defineEmits(['handleMoveList'])
+  const emits = defineEmits(['handleMoveList', 'handleClickRefreshKey'])
   const { getThumbnailImageUrl } = useUtil()
 
   const itemList = ref({})
@@ -101,12 +101,17 @@
     modifyDate.value = !modifyDate.value
   }
 
+  const modifyCancleBtn = () =>{
+    modifyDate.value = !modifyDate.value
+    emits('handleClickRefreshKey')
+  }
+
   const modifyRedt = async () =>{
     modifyData.value.reDt =picked.value.date
     modifyData.value.reTime = picked.value.time
 
     await modifyReservationReDt(modifyData.value)
-    modifyBtn()
+    modifyCancleBtn()
   }
 
   // 전체 타임
