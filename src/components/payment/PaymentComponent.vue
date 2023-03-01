@@ -1,69 +1,57 @@
 <template>
-  <v-card>
-    <v-row>
-      <v-col>
-        <v-card-title>{{ userInfo.coName }}</v-card-title>
-        <v-card-item>{{ userInfo.coEmail }}</v-card-item>
-        <v-card-item>{{ userInfo.coPhone }}</v-card-item>
-      </v-col>
-    </v-row>
+  <v-row justify="center">
+    <v-col cols="12" xl="8">
+      <v-card min-height="82vh">
+        <v-col class="pl-5 pt-2 pb-5 pr-10">
+          <h2 class="mb-5 text-brown-lighten-1">구매자 정보</h2>
+          <h3>{{ userInfo.coName }}</h3>
+          <h5>{{ userInfo.coEmail }}</h5>
+          <h5>{{ userInfo.coPhone }}</h5>
+        </v-col>
 
-    <v-divider/>
+        <v-divider class="ml-5 mr-5 my-2"/>
 
-    <v-row>
-      <v-col>
-        <v-card-title>{{ roomInfo.roName }}</v-card-title>
-        <v-card-item>{{ roomInfo.roAddress }} {{ roomInfo.roDetailAddress }}</v-card-item>
-      </v-col>
-    </v-row>
+        <v-col class="pl-5 pt-2 pb-5 pr-10">
+          <h2 class="mb-5 text-brown-lighten-1">피팅룸 정보</h2>
+          <h3>{{ roomInfo.roName }}</h3>
+          <h5>{{ roomInfo.roAddress }} {{ roomInfo.roDetailAddress }}</h5>
+        </v-col>
 
-    <v-divider/>
+        <v-divider class="ml-5 mr-5 my-2"/>
 
-    <v-row>
-      <v-col>
-        <v-card-title>예약 일시</v-card-title>
-        <v-row>
-          <v-col cols="6">
-            <VueDatePicker
-              v-model="picked.date"
-              format="yyyy-MM-dd"
-              auto-apply/>
+        <v-col class="pl-5 pt-2 pb-2">
+          <h2 class="mb-5 text-brown-lighten-1">예약 일시</h2>
+          <v-col cols="12" md="4" class="pl-0 pr-0">
+            <h5 class="text-grey-darken-1 mb-2">예약 날짜</h5>
+            <VueDatePicker v-model="picked.date" format="yyyy-MM-dd" auto-apply/>
           </v-col>
-          <v-col cols="6">
-            <v-select
-              v-model="picked.time"
-              label="예약 일시"
-              :items="ableReservation"
-              item-title="title"
-              item-value="code"
-            ></v-select>
+          <v-col cols="12" md="4" class="pl-0 pr-0" v-if="picked.date != null">
+            <h5 class="text-grey-darken-1 mb-2">예약 시간</h5>
+            <v-select v-model="picked.time" :items="ableReservation" item-title="title" item-value="code" variant="outlined"></v-select>
+          </v-col>
+        </v-col>
+
+        <v-divider class="ml-3 mr-3 my-4"/>
+
+        <v-row class="ml-1 mr-1 mb-1">
+          <v-col cols="12" md="6" v-for="productInfo in productInfos" :key="productInfo.caNo">
+            <v-row>
+              <v-col cols="12" md="4">
+                <v-img :src="getThumbnailImageUrl(productInfo.thumbnail)" style="height: 160px;"></v-img>
+              </v-col>
+              <v-col cols="12" md="8">
+                <h4>상품명 : {{ productInfo.prName }}</h4>
+                <h6>카테고리 : {{ productInfo.prcPathName || '입어볼래 대표상품' }} / 브랜드 : {{ productInfo.prBrand }}</h6>
+                <v-divider class="my-2"></v-divider>
+                <h4>선택옵션 : {{ productInfo.spSize }} / 가격 : {{ comma(productInfo.prPrice) }} 원</h4>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
-      </v-col>
-    </v-row>
-
-    <v-divider/>
-
-    <v-row>
-      <v-col cols="12">
-        <v-card v-for="productInfo in productInfos" :key="productInfo.caNo">
-          <v-row justify="center">
-            <v-col cols="4" class="align-self-center">
-              <v-img :src="getThumbnailImageUrl(productInfo.thumbnail)"></v-img>
-            </v-col>
-            <v-col cols="8">
-              <v-card-text class="mt-0 mb-0">{{ productInfo.prName }}</v-card-text>
-              <v-card-text class="mt-0 mb-0">{{ productInfo.prBrand }}</v-card-text>
-              <v-card-text class="mt-0 mb-0">{{ productInfo.spSize }}</v-card-text>
-              <v-card-text class="mt-0 mb-0">{{ productInfo.prPrice }} 원</v-card-text>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-card>
+      </v-card>
+    </v-col>
+  </v-row>
   <BottomLayout :bottom="bottom" @handleBottomNav="handleClickPaymentButton"></BottomLayout>
-
 </template>
 
 
@@ -79,6 +67,7 @@ import {
 } from "@/apis/payment/paymentApis";
 import useUtil from "@/store/common/useUtil";
 import BottomLayout from "@/layouts/BottomLayout.vue";
+import {comma} from "../../utils/util";
 
 const {getThumbnailImageUrl} = useUtil()
 
@@ -225,8 +214,6 @@ const handleClickPaymentButton = async () => {
   // 결제 아이디(tid) 저장
   paymentApproveDTO.value.tid = res.tid
 
-  console.log('handleClickPaymentButton')
-  console.log(res)
 
   // 기존에 있는 결제 토큰 삭제
   localStorage.removeItem("pg_token")
