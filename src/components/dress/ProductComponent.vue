@@ -17,7 +17,7 @@
                 <br>
                 <h5>카테고리 : {{ product.prcPathName || '입어볼래 대표상품' }} / 브랜드 : {{ product.prBrand }}</h5>
                 <v-divider class="my-4"></v-divider>
-                <h4>기본가 : {{ product.prPrice }} 원</h4>
+                <h4>기본가 : {{ comma(product.prPrice) }} 원</h4>
                 <br>
                 <v-select label="상품옵션" :items="optionInfo.items" v-model="optionInfo.selectValue" variant="outlined" @update:modelValue="handleSelectItem"></v-select>
 <!--                <v-btn @click="handleClickStock(-1)">추가</v-btn>-->
@@ -35,7 +35,7 @@
                   </v-list-item>
                 </v-list>
                 <v-divider class="my-4"></v-divider>
-                <v-btn color="success" class="w-100" @click="postComInsertProductCart"><h2>장바구니 담기</h2></v-btn>
+                <v-btn color="success" class="w-100" @click="handleClickCart"><h2>장바구니 담기</h2></v-btn>
               </v-card-text>
             </v-col>
           </v-row>
@@ -57,6 +57,7 @@
   import {onMounted, ref} from "vue";
   import {getProduct, getProductOption, insertProductCart} from "@/apis/product/productApis";
   import useUtil from "@/store/common/useUtil";
+  import {comma} from "../../utils/util";
 
 
   const props = defineProps(['prNo'])
@@ -96,15 +97,18 @@
     data.forEach(ele => optionInfo.value.items.push(ele.spSize))
   }
 
-  const postComInsertProductCart = async () => {
+  const handleClickCart = () => {
     if ( cartList.value.spNo.length == 0 ) {
       return
     }
 
-    product.value.spList = cartList.value.spNo
-    const data = await insertProductCart( product.value )
-
+    postComInsertProductCart()
     emits('handleClickCart')
+  }
+
+  const postComInsertProductCart = async () => {
+    product.value.spList = cartList.value.spNo
+    await insertProductCart( product.value )
   }
 
 

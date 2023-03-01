@@ -23,8 +23,6 @@ export const requestPaymentReady = async (paymentReadyDTO) => {
       Authorization: 'KakaoAK 92049051ce44ee6c16f4b4ee1b061b2c'
     },
   })
-  console.log('[paymentApis.requestPaymentReady]')
-  console.log(res)
 
   return res.data
 }
@@ -50,17 +48,12 @@ export const requestPaymentApprove = async (paymentApproveDTO) => {
     }
   )
 
-  console.log('[paymentApis.requestPaymentApprove]')
-  console.log(res)
-
   return res
 }
 
 export const getPaymentDetail = async (caNo) => {
   const res = await authAxios.get(`${domain}/api/payment/${caNo}`)
 
-  console.log('[paymentApis.getPayments]')
-  console.log(res)
   return res.data
 }
 
@@ -71,8 +64,6 @@ export const getAbleReservationTime = async (roNo, reservationDt) => {
     }
   })
 
-  console.log('[paymentApis.getAbleReservationTime]')
-  console.log(res)
   return res.data
 }
 
